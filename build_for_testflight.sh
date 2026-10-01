@@ -94,9 +94,9 @@ xcodebuild archive \
     -project "$XCODE_PROJ" \
     -scheme GardenPlanner \
     -configuration Release \
+    -destination "generic/platform=iOS" \
     -archivePath "$OUTPUT_DIR/GardenPlanner.xcarchive" \
-    CODE_SIGN_IDENTITY="iPhone Distribution" \
-    CODE_SIGNING_REQUIRED=YES \
+    -allowProvisioningUpdates \
     ASSETCATALOG_COMPILER_INCLUDE_SDCC=NO \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \

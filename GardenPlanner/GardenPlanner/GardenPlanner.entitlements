@@ -6,5 +6,9 @@
 	<array>
 		<string>CloudKit</string>
 	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.com.josephwoods.GardenPlanner</string>
+	</array>
 </dict>
 </plist>
