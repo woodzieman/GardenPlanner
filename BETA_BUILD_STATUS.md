@@ -1,8 +1,36 @@
 # Garden Planner — Beta Build Status
 
-**Date:** 2026-09-28  
-**Version:** 2.0.0-beta  
-**Status:** Ready for Xcode build
+**Version:** 2.0.0 (build 3)  
+**Status:** ✅ Builds clean — ready for TestFlight
+**Repo:** https://github.com/woodzieman/GardenPlanner
+
+---
+
+## Final Build Session — 2026-09-30 (build green)
+
+All compile errors fixed; `xcodebuild` **BUILD SUCCEEDED** on Xcode 27 / iOS 27 SDK (iPhone 18 Pro simulator). Remaining warnings are deprecation-only. Code pushed to GitHub.
+
+### Fixes in this session
+- `Variety.init` — added missing `barcode` parameter (last blocking error)
+- `ManualMapEditorView` — Canvas closure takes `CGSize` (not `CGRect`), `SpatialTapGesture` value → `.location`, added `import SwiftData`
+- `GardenModel` — labeled `approximates(lightLevel:)` / `approximates(wetness:)` calls
+- `GardenPlanner.swift` — `String(bytes:encoding:)` for device model lookup
+- `SurfaceZoneEditorView` — `import SwiftData`, `ForEach(id:)` fixes, Slider init order, `self.zone` assignment
+- `PlantingCalendarView` — split the ternary that broke type-checking
+- `PointCloudProcessor` — rewrote `decimateMesh` bounds math (type-checker + precedence bug)
+
+### Data fixes (the database now actually loads)
+- **`harvestWindow`**: plants.json ships display strings ("60-70 days") but the model expected `Int` — decode of all 121 varieties was silently failing and the app fell back to 8 demo plants. `Variety` now has a tolerant decoder (Int **or** string → best-effort days) + `harvestWindowText` for display. Verified at runtime: all 121 varieties decode.
+- **`WaterNeed`**: raw values were display strings ("2-4L/week") but JSON stores case names — decode crashed on the first variety. Now plain cases + `displayValue`.
+
+### Other improvements
+- Added the 8 missing design-system colorsets to Assets.xcassets (PrimaryGreen, SecondaryGreen, AccentGold, Background, Surface, WarningOrange, ErrorRed, SuccessGreen) with light/dark variants
+- `FrostDateService` — frost dates now computed for the **current** season (was hardcoded to 2024); `parseFrostDate` rolls forward to next season when the date has passed
+- `WeatherService.plantingAlerts` — was passing a frost-date string where a USDA zone was expected; now parses custom dates, falls back to zone, plus "bring in tender plants before fall frost" alerts
+
+### Known limitations (beta-acceptable)
+- `ScanCaptureView` is a placeholder UI (black box) — LiDAR capture pipeline exists in `LiDARScanner.swift`; polish later
+- Weather geocoding is a small lookup table
 
 ---
 
@@ -84,9 +112,7 @@ GardenPlanner/GardenPlanner.xcodeproj
 ```
 
 ### 2. Verify Source Files
-All 36 Swift files should already be in the Sources build phase. If any are missing:
-- Add them from `GardenPlanner/GardenPlanner/` folder
-- Ensure `plants.json` and `Info.plist` are included
+All Swift files and resources (`plants.json`, `Assets.xcassets`, `GardenPlanner.entitlements`) are already in the correct build phases — verified via a clean `xcodebuild` from the command line. Info.plist is generated from build settings (no static file). If you ever add/remove files, run `python3 regenerate_pbxproj.py` from the repo root to regenerate the project file.
 
 ### 3. Update Scheme
 - Product → Scheme → Edit Scheme → Run → Simulator: **iPhone 15 Pro**

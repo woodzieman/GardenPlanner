@@ -1,70 +1,39 @@
-# Handoff — Garden Planner App (Beta Session Summary)
+# Handoff — Garden Planner App (Current State)
 
-**Date:** 2026-09-28  
-**Session goal:** Build the complete beta with all features from PLAN.md
-
----
-
-## What Was Completed in This Session
-
-### Plant Database (Critical Path ✅)
-- Mapped 121 plants from `plant_database.json` (50 vegetables + 71 flowers)
-- Added `flower` category to PlantCategory enum
-- Generated `GP#####00` barcodes for every plant
-- Written to `GardenPlanner/GardenPlanner/plants.json` (v2.0.0-beta)
-
-### New SwiftData Models (3 files)
-- `JournalEntry` — per-plant notes, dated journal entries
-- `TaskItem` — manual and calendar-derived gardening tasks
-- `HarvestRecord` — yield logs with seasonal analytics
-
-### New Views (7 files)
-- `SettingsView` — Profile, garden management, CloudKit sync, about
-- `WeatherView` — 7-day forecast + frost alerts (Open-Meteo)
-- `JournalView` — Journal entries with plant filtering
-- `TasksView` — Task management (overdue/today/future)
-- `HarvestView` — Yield logs, seasonal analytics, top harvested
-- `TrackView` — Navigation hub for 5 sub-features
-- (Updated) `PlantListView` — Now shows flower category + scan button
-
-### Updated Main Tab Bar (5 tabs)
-```
-Gardens  |  Plants  |  Layout  |  Track  |  Settings
-  🍃      |  🌱     |  ☑       |  🕒      |  ⚙️
-```
-
-### Xcode Project Fixed ✅
-- **Rebuilt `project.pbxproj`** with all 36 Swift + 2 resource files
-- Scheme file (`GardenPlanner.xcscheme`) is properly configured
-- Project is ready to open in Xcode
-
-### Full Feature Status (✅ = Complete)
-- ✅ Onboarding · Garden CRUD · 10 SwiftData models
-- ✅ 121-plant library with search/filter/barcodes
-- ✅ Planting Calendar · Companion Planting
-- ✅ Surface Zone Editor (light/wetness sliders)
-- ✅ Layout Editor · Manual Map Editor
-- ✅ LiDAR Scanner · **Barcode Scanning**
-- ✅ Weather (Open-Meteo) · Journal · Tasks · Harvest
-- ✅ CloudKit Sync · Design System
+**Date:** 2026-09-30  
+**Status:** ✅ Build green · Pushed to GitHub · Ready for TestFlight
 
 ---
 
-## Next Steps — When You Can Open Xcode
+## Where things stand
 
-1. **Open** `GardenPlanner/GardenPlanner.xcodeproj` (should open now with all 36 files referenced)
-2. **Verify** all 36 Swift files are in the Sources build phase
-3. **Select** iPhone 15 Pro simulator → Build and run (Cmd+R)
-4. **Test** all 5 tabs: Gardens, Plants, Layout, Track, Settings
-5. **Test** barcode scanning on a real device (iPhone 12 Pro+)
-6. **Run** Phase 0 LiDAR spike on LiDAR device
+- **App builds clean** on Xcode 27.0 / iOS 27 SDK / Swift 6.4 (deployment target iOS 17.0, bundle `com.josephwoods.GardenPlanner`, team `VDWDUNC9R2`, version 2.0.0 (3)). Command-line `xcodebuild` → `** BUILD SUCCEEDED **`; remaining warnings are deprecation-only.
+- **Repo:** https://github.com/woodzieman/GardenPlanner (public; make private if you prefer — no secrets in it: `.gitignore` excludes `*.p8` keys, `fastlane/app_store_connect_api_key.json`, fastlane output, xcuserdata, scratch).
+- **Plant database (121 varieties) now actually loads** — two data/schema mismatches had been silently breaking the JSON decode and falling back to 8 demo plants. Both fixed and runtime-verified (see BETA_BUILD_STATUS.md).
 
----
+## What the user needs to do (TestFlight)
 
-## Quick Start
+1. Open `GardenPlanner/GardenPlanner.xcodeproj` in Xcode
+2. Signing is already set to team `VDWDUNC9R2`; create a TestFlight distribution certificate/provisioning profile if Xcode asks (or use automatic signing)
+3. Select a device destination (Any iOS Device) → Product → Archive → Distribute App → TestFlight
+4. Bump MARKETING_VERSION/CURRENT_PROJECT_VERSION as needed (set in project settings; Info.plist is generated)
 
-1. Open `GardenPlanner/GardenPlanner.xcodeproj`
-2. Select iPhone 15 Pro simulator
-3. Build and run (Cmd+R)
-4. Complete onboarding (set location, USDA zone, frost dates)
-5. Test all 5 tabs: Gardens, Plants, Layout, Track, Settings
+## Next work for agents (priority order)
+
+1. **ScanCaptureView** is a placeholder UI (black box) — the LiDAR pipeline (`LiDARScanner.swift`, using iOS 27 `frame.sceneDepth`) is real; build a proper camera/preview UI
+2. **Weather geocoding** is a small lookup table — add proper geocoding fallback
+3. **PlantDetailView** — show barcode (`variety.barcode`)
+4. **LayoutEditorView.isValid** is a placeholder — implement real light/moisture matching (GardenModel has a working `approximates`-based version to reuse)
+5. Phase 0 spike: run `GardenPlannerSpike/` on a LiDAR device, fill `SPIKE_GATE.md`
+
+## Critical environment gotchas (verified against the iOS 27 SDK — do not regress)
+
+- **iOS 27 SDK removed old ARKit depth APIs**: `ARFrame.depthData`, `isLiDARDepthInformationEnabled`, `supportedScenes`, `unprojectPosition`. Use `frame.sceneDepth` (CVPixelBuffer) + `camera.projectionMatrix` (property). Never use the removed ones.
+- **Swift 6.4 SwiftData `@Model` macro rejects shorthand enum defaults** — write `= PlantStatus.planted`, not `= .planted`. Tuples are not persistable in `@Model`.
+- `SpatialTapGesture.onEnded` hands you `Value` — read `.location` for the CGPoint.
+- SwiftUI `Canvas { context, size in }` — the second parameter is **CGSize**, not CGRect.
+- pbxproj: `objects` dict closes with `};`; subgroups use `path = X;` not `name = X;`. After adding/removing source files, run `python3 regenerate_pbxproj.py` (repo root).
+
+## Reference
+
+- [PLAN.md](PLAN.md) — product plan · [BETA_BUILD_STATUS.md](BETA_BUILD_STATUS.md) — full build log + feature checklist · [QUICK_START_TESTFLIGHT.md](QUICK_START_TESTFLIGHT.md) · [docs/](docs) — App Store Connect checklist
