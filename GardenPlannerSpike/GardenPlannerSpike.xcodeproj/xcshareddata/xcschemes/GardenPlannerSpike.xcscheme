@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme LastUpgradeCheck = "1750" version = "1.7">
+  <BuildAction parallelizeBuildables = "1" buildImplicitDependencies = "1" runPostActionsOnSuccess = "1">
+    <ExpandFromTarget name = "GardenPlannerSpike" buildForTesting = "1" buildForRunning = "1" buildForProfiling = "1" buildForArchiving = "1" buildForAnalyzing = "1">
+      <Target name = "GardenPlannerSpike">
+        <BuildableProductRunnable runnable = "Debug">
+          <BuildableReference buildProductLocation = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Debug-iphonesimulator/GardenPlannerSpike.app" buildProductName = "GardenPlannerSpike" buildProductType = "com.apple.product-type.application" platformIdentifier = "com.apple.platform.iphoneos">
+          </BuildableReference>
+        </BuildableProductRunnable>
+      </Target>
+    </ExpandFromTarget>
+  </BuildAction>
+  <TestAction buildConfiguration = "Debug" selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB" symbolSeparationFile = "" shouldUseLaunchSchemeArgsEnv = "1" compiledBinaryPath = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Debug-iphonesimulator/GardenPlannerSpike" shouldAutoCreateTestReport = "0" shouldAutoCreateCoverageReport = "0">
+    <ExpandFromTarget name = "GardenPlannerSpike" runPostActionsOnSuccess = "1">
+      <Target name = "GardenPlannerSpike">
+      </Target>
+    </ExpandFromTarget>
+  </TestAction>
+  <LaunchAction buildConfiguration = "Debug" selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB" symbolFile = "" latitude = "37.774929555100963" longitude = "-122.41940989882469" shouldModifyCoreDataCompiledModel = "0" runPostActionsOnSuccess = "1" startupBehavior = "0" simulationLocationAllowEmulatedLocation = "1" simulationLocationSimulationMode = "2" customizationExpressions = "">
+    <ExpandFromTarget name = "GardenPlannerSpike">
+      <Target name = "GardenPlannerSpike">
+      </Target>
+    </ExpandFromTarget>
+  </LaunchAction>
+  <ProfileAction buildConfiguration = "Release" shouldRebuildAllTarget = "0" shouldLaunchDebugWithSpeedScope = "0" launchedEditor = "" compiledBinaryPath = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Release-iphonesimulator/GardenPlannerSpike" shouldAutoCreateTestReport = "0" shouldAutoCreateCoverageReport = "0" runPostActionsOnSuccess = "1">
+    <ExpandFromTarget name = "GardenPlannerSpike">
+      <Target name = "GardenPlannerSpike">
+      </Target>
+    </ExpandFromTarget>
+  </ProfileAction>
+  <AnalyzeAction buildConfiguration = "Debug" compiledBinaryPath = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Debug-iphonesimulator/GardenPlannerSpike" runPostActionsOnSuccess = "1">
+    <ExpandFromTarget name = "GardenPlannerSpike">
+      <Target name = "GardenPlannerSpike">
+      </Target>
+    </ExpandFromTarget>
+  </AnalyzeAction>
+  <ArchiveAction buildConfiguration = "Release" revealArchiveOnOrganizer = "1" customLocation = "" path = "" exportAsArchive = "0" runPostActionsOnSuccess = "1">
+    <ExpandFromTarget name = "GardenPlannerSpike">
+      <Target name = "GardenPlannerSpike">
+      </Target>
+    </ExpandFromTarget>
+  </ArchiveAction>
+</Scheme>

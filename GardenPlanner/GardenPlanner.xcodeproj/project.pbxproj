@@ -1,0 +1,465 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+	05f6d198a360b62d5eae5e00 /* ScanCaptureView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 7ba2d700b0b9474fe13266d5;};
+	06ab4fcfeb5e40a669b502ea /* WeatherView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 7a2bbc3e7caae0aa32fd51ee;};
+	1697182c6c0db062459de738 /* TrackView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = fe67c5527b66a995067fa440;};
+	17144e720aff98420092d1d6 /* HarvestRecord.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = aaac99532ba5d57473bee693;};
+	181ea707e70432366e1e9b61 /* PlantListView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = d1ca2b03eb437883bb4a89b3;};
+	238004dd1f2110e47f53abe3 /* ManualMapEditorView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 2f428f2594ebcb962c2911dc;};
+	269466f688ad46574e154af4 /* LayoutEditorView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 99f1b13649cdfc6234b460b7;};
+	2bb6f7b03423e16eec0ca763 /* PlantDatabaseService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = f942309ff0f3901f56030266;};
+	379c1a5fb170505047dd08e6 /* Geometry2DProjection.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 2be9f4af571a31e2f6e7199a;};
+	4260ad09acfbbb71e568a5ff /* VarietyModel.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 4d14d833052e6488b32ce09e;};
+	465e0be491dcaaf7403ff7e5 /* TaskItem.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = ca62787bd448d325a6b0a01f;};
+	4715bf88def8fc3e65177d67 /* FrostDateService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 8c9abd46056742380318873e;};
+	4dad58b25e01ede34857ad0c /* SurfaceZoneModel.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = c6ae723630ee81c57cb44227;};
+	5479cb1e80686a7abb4dd9fa /* PlantingCalendarView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = c41c39148072fdafa84322dc;};
+	62553060d9b210844129c2f8 /* SettingsView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 6c35a9f0c87c9ec772e845a0;};
+	67f66ae0da6cf0f9320f02ff /* JournalView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 16053c234bfffd6950c1a64e;};
+	69a019663b195c43dc6007ff /* TasksView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 58e865cce1fc8b8ae2732ca7;};
+	6c012ff2009626e1375d819c /* GardenPlanner.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 22ac976e321bc8373f4c60de;};
+	73604af95221365018a61913 /* CompanionPlantService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 3089066d9b2127a8a3ac541c;};
+	839925b0d6a313e849d29722 /* GardenModel.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 851ce50fe11844b38bcdf4a4;};
+	9519939d23b280e8ec0a1de8 /* OnboardingView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = a8c3432e5a4d49b592ac5947;};
+	9c04f3ca6db7772a93c1191f /* PlantDetailView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = ee0dad01baf6f5a00e9b417a;};
+	9ea3c78ff64acbce19da0888 /* Assets.xcassets in GardenPlanner in Resources */ = {isa = PBXBuildFile; fileRef = d7c6c251336ca1d1eee33a7c;};
+	adcc06b38fc9b9d8a99cd05f /* plants.json in GardenPlanner in Resources */ = {isa = PBXBuildFile; fileRef = e91c9733ec3c372b2db317e6;};
+	b21c0ed9210c43550d6cfcff /* PlantInstanceModel.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 2c173fba63f06c92ee5e20b3;};
+	b49b3b748ddb79f1612e2810 /* SyncRepository.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 43eff4abbf558e67f8865073;};
+	b6b5578309b7889a48742940 /* DesignSystem.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 76b935c237ee91b5f103ff18;};
+	b7a1124aeb3e12b3fd0e6cb8 /* SeedRecord.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = eb568a232a1c417acbf5dceb;};
+	b9c9b05427e7f47c63efc058 /* BarcodeScannerService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 5ce7270601863ce54e628a51;};
+	bbcf22fe8e988e0ad3c3e323 /* SeedScannerView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = b21d64af78aed08a1f30957a;};
+	c784acec76a85c25e3fc0e44 /* HarvestView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = aa2cc26916b695b8e3c96d47;};
+	ce02a8df36f4b92d528d6799 /* JournalEntry.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 7369613b28fc1df68daf23af;};
+	d2212eadbd62c99b968cc3bf /* PointCloudProcessor.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = ac4956e9eeec22aee3dd8327;};
+	e8eac8771dd82a41ad5d43e5 /* SurfaceZoneEditorView.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = b9de0c2703f7b6fa03ee3e85;};
+	ef4097220487796285c2fcc4 /* WeatherService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = f905b7544d5e015e67144319;};
+	f189e1f4c41836cbb0188e60 /* LiDARScanner.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 9dd1d00467a5b639aa6866fd;};
+	fa9c766424214e80693e8a07 /* BarcodeMatcherService.swift in GardenPlanner in Sources */ = {isa = PBXBuildFile; fileRef = 8ddd054ef0d403722478b0c6;};
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+	09045ddc2845449d80592fb9 /* GardenPlanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GardenPlanner.entitlements; sourceTree = "<group>";};
+	16053c234bfffd6950c1a64e /* Views/JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>";};
+	22ac976e321bc8373f4c60de /* GardenPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenPlanner.swift; sourceTree = "<group>";};
+	2be9f4af571a31e2f6e7199a /* Scanning/Geometry2DProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry2DProjection.swift; sourceTree = "<group>";};
+	2c173fba63f06c92ee5e20b3 /* Models/PlantInstanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInstanceModel.swift; sourceTree = "<group>";};
+	2f428f2594ebcb962c2911dc /* Views/ManualMapEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMapEditorView.swift; sourceTree = "<group>";};
+	3089066d9b2127a8a3ac541c /* Services/CompanionPlantService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionPlantService.swift; sourceTree = "<group>";};
+	43eff4abbf558e67f8865073 /* Services/SyncRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRepository.swift; sourceTree = "<group>";};
+	4d14d833052e6488b32ce09e /* Models/VarietyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarietyModel.swift; sourceTree = "<group>";};
+	58e865cce1fc8b8ae2732ca7 /* Views/TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>";};
+	5ce7270601863ce54e628a51 /* Services/BarcodeScannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerService.swift; sourceTree = "<group>";};
+	6c35a9f0c87c9ec772e845a0 /* Views/SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>";};
+	7369613b28fc1df68daf23af /* Models/JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>";};
+	76b935c237ee91b5f103ff18 /* Utilities/DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>";};
+	7a2bbc3e7caae0aa32fd51ee /* Views/WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>";};
+	7ba2d700b0b9474fe13266d5 /* Views/ScanCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCaptureView.swift; sourceTree = "<group>";};
+	851ce50fe11844b38bcdf4a4 /* Models/GardenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenModel.swift; sourceTree = "<group>";};
+	8c9abd46056742380318873e /* Services/FrostDateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrostDateService.swift; sourceTree = "<group>";};
+	8ddd054ef0d403722478b0c6 /* Services/BarcodeMatcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeMatcherService.swift; sourceTree = "<group>";};
+	99f1b13649cdfc6234b460b7 /* Views/LayoutEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEditorView.swift; sourceTree = "<group>";};
+	9dd1d00467a5b639aa6866fd /* Scanning/LiDARScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiDARScanner.swift; sourceTree = "<group>";};
+	a8c3432e5a4d49b592ac5947 /* Views/OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>";};
+	aa2cc26916b695b8e3c96d47 /* Views/HarvestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarvestView.swift; sourceTree = "<group>";};
+	aaac99532ba5d57473bee693 /* Models/HarvestRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarvestRecord.swift; sourceTree = "<group>";};
+	ac4956e9eeec22aee3dd8327 /* Scanning/PointCloudProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudProcessor.swift; sourceTree = "<group>";};
+	b21d64af78aed08a1f30957a /* Views/SeedScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedScannerView.swift; sourceTree = "<group>";};
+	b9de0c2703f7b6fa03ee3e85 /* Views/SurfaceZoneEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceZoneEditorView.swift; sourceTree = "<group>";};
+	c41c39148072fdafa84322dc /* Views/PlantingCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantingCalendarView.swift; sourceTree = "<group>";};
+	c6ae723630ee81c57cb44227 /* Models/SurfaceZoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceZoneModel.swift; sourceTree = "<group>";};
+	ca62787bd448d325a6b0a01f /* Models/TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>";};
+	d1ca2b03eb437883bb4a89b3 /* Views/PlantListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantListView.swift; sourceTree = "<group>";};
+	d7c6c251336ca1d1eee33a7c /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>";};
+	dacd692eeafea1078f0c1933 /* GardenPlanner.app */ = {isa = PBXFileReference; explicitFileType = "wrapper.application"; includeInIndex = 0; path = GardenPlanner.app; sourceTree = BUILT_PRODUCTS_DIR;};
+	e91c9733ec3c372b2db317e6 /* plants.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = plants.json; sourceTree = "<group>";};
+	eb568a232a1c417acbf5dceb /* Models/SeedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRecord.swift; sourceTree = "<group>";};
+	ee0dad01baf6f5a00e9b417a /* Views/PlantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDetailView.swift; sourceTree = "<group>";};
+	f905b7544d5e015e67144319 /* Services/WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>";};
+	f942309ff0f3901f56030266 /* Services/PlantDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDatabaseService.swift; sourceTree = "<group>";};
+	fe67c5527b66a995067fa440 /* Views/TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>";};
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+	a2772eb5676ed2b691193947 = {
+		isa = PBXGroup;
+		children = (b6dc0797b4c00dff3775e6bc, 8241ed42b56cc1da7f726566);
+		sourceTree = "<group>";
+	};
+	b6dc0797b4c00dff3775e6bc /* GardenPlanner */ = {
+		isa = PBXGroup;
+		children = (22ac976e321bc8373f4c60de, e495f927ddf1552c7e91bf64, 93a45a45203c19911ac69f5e, 254f45a960fd7bbefb5a69ea, 341d0f3f7482bc39d9782fbf, 3cffce6ca245adf5fc27600d, d7c6c251336ca1d1eee33a7c, e91c9733ec3c372b2db317e6, 09045ddc2845449d80592fb9);
+		path = GardenPlanner;
+		sourceTree = "<group>";
+	};
+	e495f927ddf1552c7e91bf64 /* Models */ = {
+		isa = PBXGroup;
+		children = (851ce50fe11844b38bcdf4a4, aaac99532ba5d57473bee693, 7369613b28fc1df68daf23af, 2c173fba63f06c92ee5e20b3, eb568a232a1c417acbf5dceb, c6ae723630ee81c57cb44227, ca62787bd448d325a6b0a01f, 4d14d833052e6488b32ce09e);
+		path = Models;
+		sourceTree = "<group>";
+	};
+	93a45a45203c19911ac69f5e /* Scanning */ = {
+		isa = PBXGroup;
+		children = (2be9f4af571a31e2f6e7199a, 9dd1d00467a5b639aa6866fd, ac4956e9eeec22aee3dd8327);
+		path = Scanning;
+		sourceTree = "<group>";
+	};
+	254f45a960fd7bbefb5a69ea /* Services */ = {
+		isa = PBXGroup;
+		children = (8ddd054ef0d403722478b0c6, 5ce7270601863ce54e628a51, 3089066d9b2127a8a3ac541c, 8c9abd46056742380318873e, f942309ff0f3901f56030266, 43eff4abbf558e67f8865073, f905b7544d5e015e67144319);
+		path = Services;
+		sourceTree = "<group>";
+	};
+	341d0f3f7482bc39d9782fbf /* Utilities */ = {
+		isa = PBXGroup;
+		children = (76b935c237ee91b5f103ff18);
+		path = Utilities;
+		sourceTree = "<group>";
+	};
+	3cffce6ca245adf5fc27600d /* Views */ = {
+		isa = PBXGroup;
+		children = (aa2cc26916b695b8e3c96d47, 16053c234bfffd6950c1a64e, 99f1b13649cdfc6234b460b7, 2f428f2594ebcb962c2911dc, a8c3432e5a4d49b592ac5947, ee0dad01baf6f5a00e9b417a, d1ca2b03eb437883bb4a89b3, c41c39148072fdafa84322dc, 7ba2d700b0b9474fe13266d5, b21d64af78aed08a1f30957a, 6c35a9f0c87c9ec772e845a0, b9de0c2703f7b6fa03ee3e85, 58e865cce1fc8b8ae2732ca7, fe67c5527b66a995067fa440, 7a2bbc3e7caae0aa32fd51ee);
+		path = Views;
+		sourceTree = "<group>";
+	};
+	8241ed42b56cc1da7f726566 /* Products */ = {
+		isa = PBXGroup;
+		children = (dacd692eeafea1078f0c1933);
+		name = Products;
+		sourceTree = "<group>";
+	};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+	612b422e139b072eb04dc483 /* GardenPlanner */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 710e4c902eab327a675b770e;
+		buildPhases = (6a03ea9a981a58e2894620d4, 5053daffcabb84a4bcf16deb);
+		buildRules = ();
+		dependencies = ();
+		name = GardenPlanner;
+		productName = GardenPlanner;
+		productReference = dacd692eeafea1078f0c1933;
+		productType = "com.apple.product-type.application";
+	};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+	b39466ba9848c9bdf2d3de50 /* Project object */ = {
+		isa = PBXProject;
+		attributes = {
+			BuildIndependentTargetsInParallel = 1;
+			LastSwiftUpdateCheck = 2700;
+			LastUpgradeCheck = 2700;
+		};
+		buildConfigurationList = ac4d63f12ebbdcb32dfba89f;
+		compatibilityVersion = "Xcode 14.0";
+		developmentRegion = en;
+		hasScannedForEncodings = 0;
+		knownRegions = (
+			en,
+			Base,
+		);
+		mainGroup = a2772eb5676ed2b691193947;
+		productRefGroup = 8241ed42b56cc1da7f726566;
+		projectRoot = "";
+		targets = (612b422e139b072eb04dc483 );
+	};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+	5053daffcabb84a4bcf16deb = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (9ea3c78ff64acbce19da0888, adcc06b38fc9b9d8a99cd05f);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+	6a03ea9a981a58e2894620d4 = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (6c012ff2009626e1375d819c, 839925b0d6a313e849d29722, 17144e720aff98420092d1d6, ce02a8df36f4b92d528d6799, b21c0ed9210c43550d6cfcff, b7a1124aeb3e12b3fd0e6cb8, 4dad58b25e01ede34857ad0c, 465e0be491dcaaf7403ff7e5, 4260ad09acfbbb71e568a5ff, 379c1a5fb170505047dd08e6, f189e1f4c41836cbb0188e60, d2212eadbd62c99b968cc3bf, fa9c766424214e80693e8a07, b9c9b05427e7f47c63efc058, 73604af95221365018a61913, 4715bf88def8fc3e65177d67, 2bb6f7b03423e16eec0ca763, b49b3b748ddb79f1612e2810, ef4097220487796285c2fcc4, b6b5578309b7889a48742940, c784acec76a85c25e3fc0e44, 67f66ae0da6cf0f9320f02ff, 269466f688ad46574e154af4, 238004dd1f2110e47f53abe3, 9519939d23b280e8ec0a1de8, 9c04f3ca6db7772a93c1191f, 181ea707e70432366e1e9b61, 5479cb1e80686a7abb4dd9fa, 05f6d198a360b62d5eae5e00, bbcf22fe8e988e0ad3c3e323, 62553060d9b210844129c2f8, e8eac8771dd82a41ad5d43e5, 69a019663b195c43dc6007ff, 1697182c6c0db062459de738, 06ab4fcfeb5e40a669b502ea);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+	48f3d7dc62b4b8078cc6a59f /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+		DEVELOPMENT_TEAM = "VDWDUNC9R2";
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+		MTL_FAST_MATH = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = dwarf;
+		ENABLE_TESTABILITY = YES;
+		GCC_OPTIMIZATION_LEVEL = 0;
+		GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1",);
+		ONLY_ACTIVE_ARCH = YES;
+		};
+		name = Debug;
+	};
+	04fedf5a845ccbc1f9d469d1 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+		DEVELOPMENT_TEAM = "VDWDUNC9R2";
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		MTL_ENABLE_DEBUG_INFO = NO;
+		MTL_FAST_MATH = YES;
+		DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+		ENABLE_NS_ASSERTIONS = NO;
+		};
+		name = Release;
+	};
+	48c8d6707bf49a55f22619cb /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGN_ENTITLEMENTS = GardenPlanner/GardenPlanner.entitlements;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 3;
+		DEVELOPMENT_TEAM = "VDWDUNC9R2";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_KEY_CFBundleDisplayName = "3D Garden Planner";
+		INFOPLIST_KEY_NSCameraUsageDescription = "Garden Planner uses the camera for LiDAR scanning, AR mapping, and seed-packet barcode scanning. Scans stay on your device.";
+		INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Garden Planner uses the local network for optional CloudKit sync to back up garden plans across your Apple devices.";
+		INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Garden Planner uses your location for local weather forecasts and frost-date alerts in your garden.";
+		INFOPLIST_KEY_NSMotionUsageDescription = "Garden Planner uses motion and orientation data to stabilize LiDAR/AR garden scans.";
+		INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Garden Planner can save your labeled garden map and journal photos to your Photos library.";
+		INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+		INFOPLIST_KEY_UIApplicationSupportsMultipleScenes = NO;
+		INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+		INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		MARKETING_VERSION = 2.0.0;
+		PRODUCT_BUNDLE_IDENTIFIER = com.josephwoods.GardenPlanner;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.9;
+		TARGETED_DEVICE_FAMILY = "1,2";
+		};
+		name = Debug;
+	};
+	3ff490a190dbd79b901fde99 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGN_ENTITLEMENTS = GardenPlanner/GardenPlanner.entitlements;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 3;
+		DEVELOPMENT_TEAM = "VDWDUNC9R2";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_KEY_CFBundleDisplayName = "3D Garden Planner";
+		INFOPLIST_KEY_NSCameraUsageDescription = "Garden Planner uses the camera for LiDAR scanning, AR mapping, and seed-packet barcode scanning. Scans stay on your device.";
+		INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Garden Planner uses the local network for optional CloudKit sync to back up garden plans across your Apple devices.";
+		INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Garden Planner uses your location for local weather forecasts and frost-date alerts in your garden.";
+		INFOPLIST_KEY_NSMotionUsageDescription = "Garden Planner uses motion and orientation data to stabilize LiDAR/AR garden scans.";
+		INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Garden Planner can save your labeled garden map and journal photos to your Photos library.";
+		INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+		INFOPLIST_KEY_UIApplicationSupportsMultipleScenes = NO;
+		INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+		INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		MARKETING_VERSION = 2.0.0;
+		PRODUCT_BUNDLE_IDENTIFIER = com.josephwoods.GardenPlanner;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.9;
+		TARGETED_DEVICE_FAMILY = "1,2";
+		};
+		name = Release;
+	};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+	ac4d63f12ebbdcb32dfba89f /* Build configuration list for PBXProject GardenPlanner */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (48f3d7dc62b4b8078cc6a59f, 04fedf5a845ccbc1f9d469d1);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	710e4c902eab327a675b770e /* Build configuration list for PBXNativeTarget GardenPlanner */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (48c8d6707bf49a55f22619cb, 3ff490a190dbd79b901fde99);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+/* End XCConfigurationList section */
+	};
+	rootObject = b39466ba9848c9bdf2d3de50 /* Project object */;
+}

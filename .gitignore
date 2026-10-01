@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Secrets — NEVER commit real credentials
+*.p8
+AuthKey_*.p8
+fastlane/app_store_connect_api_key.json
+
+# fastlane build artifacts
+fastlane/output/
+fastlane/report/
+
+# Xcode user-specific state
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+
+# Build artifacts
+build/
+DerivedData/
+*.ipa
+*.app
+
+# Session scratch space
+scratch/

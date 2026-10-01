@@ -1,0 +1,403 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {}
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1dd2ff0e-de03-5f69-88a9-0e2568ee7282_build /* BarcodeMatcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1dd2ff0e-de03-5f69-88a9-0e2568ee7282_ref; };
+		3b679a9e-c735-5f56-9ad4-9dd2d0e41646_build /* BarcodeScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3b679a9e-c735-5f56-9ad4-9dd2d0e41646_ref; };
+		2ebebffe-694b-55f4-a5e9-afdba14254cf_build /* CompanionPlantService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ebebffe-694b-55f4-a5e9-afdba14254cf_ref; };
+		1fe67665-af28-5997-8944-bac36c4ef407_build /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1fe67665-af28-5997-8944-bac36c4ef407_ref; };
+		f2454601-214f-56dc-bbe6-f1b37a6baf6c_build /* FrostDateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = f2454601-214f-56dc-bbe6-f1b37a6baf6c_ref; };
+		12236aa0-a6b2-5e88-a213-cc2c8b889d35_build /* GardenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12236aa0-a6b2-5e88-a213-cc2c8b889d35_ref; };
+		fb23fb58-5515-51f6-a3fb-8c37298b06af_build /* GardenPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = fb23fb58-5515-51f6-a3fb-8c37298b06af_ref; };
+		fe00471c-040f-556d-96f9-bda385542f8d_build /* Geometry2DProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = fe00471c-040f-556d-96f9-bda385542f8d_ref; };
+		ba609b53-58f2-5224-bad0-e8ae787b16f5_build /* HarvestRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = ba609b53-58f2-5224-bad0-e8ae787b16f5_ref; };
+		eddf63b7-67f2-5ce8-a227-d01d6771cbe0_build /* HarvestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = eddf63b7-67f2-5ce8-a227-d01d6771cbe0_ref; };
+		534592b7-3321-5754-a6a3-a56d0898020e_build /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534592b7-3321-5754-a6a3-a56d0898020e_ref; };
+		a24041d0-e73c-54d9-ac1e-89032fc7810e_build /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = a24041d0-e73c-54d9-ac1e-89032fc7810e_ref; };
+		b01bfb7c-d338-5bac-80d5-e9a125b6aa93_build /* LayoutEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = b01bfb7c-d338-5bac-80d5-e9a125b6aa93_ref; };
+		f158a45e-3ea5-5c6c-8521-7447c75f0355_build /* LiDARScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = f158a45e-3ea5-5c6c-8521-7447c75f0355_ref; };
+		f8ac9426-9022-5300-b3e1-1e145682b1c2_build /* ManualMapEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = f8ac9426-9022-5300-b3e1-1e145682b1c2_ref; };
+		a27c41d5-65d7-5e3b-9a2a-330aae1cba06_build /* ManualMapEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = a27c41d5-65d7-5e3b-9a2a-330aae1cba06_ref; };
+		f1795305-9cce-5a53-aaee-671596df460d_build /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = f1795305-9cce-5a53-aaee-671596df460d_ref; };
+		76d64a9e-e019-5ca8-9b9d-901510d896a5_build /* PlantDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76d64a9e-e019-5ca8-9b9d-901510d896a5_ref; };
+		86f9cb7a-afac-5462-9c7a-aae083d986db_build /* PlantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86f9cb7a-afac-5462-9c7a-aae083d986db_ref; };
+		10fe0536-522f-5bb2-82a8-9928b8c207a6_build /* PlantInstanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10fe0536-522f-5bb2-82a8-9928b8c207a6_ref; };
+		b78077a8-14a3-5a9b-8925-66c1380a7c2a_build /* PlantListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = b78077a8-14a3-5a9b-8925-66c1380a7c2a_ref; };
+		353fd259-8941-54ad-83d3-af62414e0a8a_build /* PlantingCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353fd259-8941-54ad-83d3-af62414e0a8a_ref; };
+		cb6553df-d044-5c57-a578-606426fc8c53_build /* PointCloudProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = cb6553df-d044-5c57-a578-606426fc8c53_ref; };
+		dffb3014-56a2-5d8d-94f4-a160fb46c82f_build /* ScanCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = dffb3014-56a2-5d8d-94f4-a160fb46c82f_ref; };
+		57d06119-404f-5bb4-910e-fca8a865a635_build /* SeedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57d06119-404f-5bb4-910e-fca8a865a635_ref; };
+		d190e9b4-c3e0-5a77-9414-2cbf306cd85f_build /* SeedScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = d190e9b4-c3e0-5a77-9414-2cbf306cd85f_ref; };
+		b2a46d72-2ab5-5b42-8795-d3f3ed7faeb0_build /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = b2a46d72-2ab5-5b42-8795-d3f3ed7faeb0_ref; };
+		25e2b0f5-0b2f-58cf-9dd8-2a26ecc77210_build /* SurfaceZoneEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25e2b0f5-0b2f-58cf-9dd8-2a26ecc77210_ref; };
+		c26cbc79-940b-5381-b84a-e2363a55123e_build /* SurfaceZoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = c26cbc79-940b-5381-b84a-e2363a55123e_ref; };
+		f9158f92-7eb0-5db8-a8b5-eaf2df91f0f8_build /* SyncRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = f9158f92-7eb0-5db8-a8b5-eaf2df91f0f8_ref; };
+		8df4b24a-0438-5bd3-855e-20ee9b9179d6_build /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8df4b24a-0438-5bd3-855e-20ee9b9179d6_ref; };
+		6ab62b38-5b4c-5c0c-8e61-d2be90d293ac_build /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ab62b38-5b4c-5c0c-8e61-d2be90d293ac_ref; };
+		e3be16ba-f1d6-576c-9ec7-3be5f7e101a7_build /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = e3be16ba-f1d6-576c-9ec7-3be5f7e101a7_ref; };
+		2560f2c0-5a3f-5a0d-a92d-0ac4f2efc72c_build /* VarietyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2560f2c0-5a3f-5a0d-a92d-0ac4f2efc72c_ref; };
+		12cb3db5-478e-5f8e-8820-678be28dc098_build /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12cb3db5-478e-5f8e-8820-678be28dc098_ref; };
+		7d2ba2f5-d030-5218-9740-1101a9842d71_build /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7d2ba2f5-d030-5218-9740-1101a9842d71_ref; };
+		ca3ba7a4-a147-54f2-9726-5ba911d1825a_build /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ca3ba7a4-a147-54f2-9726-5ba911d1825a_ref; };
+		e397a332-26d2-5c9a-9295-de57a8b494a5_build /* plants.json in Resources */ = {isa = PBXBuildFile; fileRef = e397a332-26d2-5c9a-9295-de57a8b494a5_ref; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1dd2ff0e-de03-5f69-88a9-0e2568ee7282_ref /* BarcodeMatcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeMatcherService.swift; sourceTree = "<group>"; };
+		3b679a9e-c735-5f56-9ad4-9dd2d0e41646_ref /* BarcodeScannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerService.swift; sourceTree = "<group>"; };
+		2ebebffe-694b-55f4-a5e9-afdba14254cf_ref /* CompanionPlantService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionPlantService.swift; sourceTree = "<group>"; };
+		1fe67665-af28-5997-8944-bac36c4ef407_ref /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		f2454601-214f-56dc-bbe6-f1b37a6baf6c_ref /* FrostDateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrostDateService.swift; sourceTree = "<group>"; };
+		12236aa0-a6b2-5e88-a213-cc2c8b889d35_ref /* GardenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenModel.swift; sourceTree = "<group>"; };
+		fb23fb58-5515-51f6-a3fb-8c37298b06af_ref /* GardenPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenPlanner.swift; sourceTree = "<group>"; };
+		fe00471c-040f-556d-96f9-bda385542f8d_ref /* Geometry2DProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry2DProjection.swift; sourceTree = "<group>"; };
+		ba609b53-58f2-5224-bad0-e8ae787b16f5_ref /* HarvestRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarvestRecord.swift; sourceTree = "<group>"; };
+		eddf63b7-67f2-5ce8-a227-d01d6771cbe0_ref /* HarvestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarvestView.swift; sourceTree = "<group>"; };
+		534592b7-3321-5754-a6a3-a56d0898020e_ref /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		a24041d0-e73c-54d9-ac1e-89032fc7810e_ref /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		b01bfb7c-d338-5bac-80d5-e9a125b6aa93_ref /* LayoutEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEditorView.swift; sourceTree = "<group>"; };
+		f158a45e-3ea5-5c6c-8521-7447c75f0355_ref /* LiDARScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiDARScanner.swift; sourceTree = "<group>"; };
+		f8ac9426-9022-5300-b3e1-1e145682b1c2_ref /* ManualMapEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMapEditor.swift; sourceTree = "<group>"; };
+		a27c41d5-65d7-5e3b-9a2a-330aae1cba06_ref /* ManualMapEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMapEditorView.swift; sourceTree = "<group>"; };
+		f1795305-9cce-5a53-aaee-671596df460d_ref /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		76d64a9e-e019-5ca8-9b9d-901510d896a5_ref /* PlantDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDatabaseService.swift; sourceTree = "<group>"; };
+		86f9cb7a-afac-5462-9c7a-aae083d986db_ref /* PlantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDetailView.swift; sourceTree = "<group>"; };
+		10fe0536-522f-5bb2-82a8-9928b8c207a6_ref /* PlantInstanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInstanceModel.swift; sourceTree = "<group>"; };
+		b78077a8-14a3-5a9b-8925-66c1380a7c2a_ref /* PlantListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantListView.swift; sourceTree = "<group>"; };
+		353fd259-8941-54ad-83d3-af62414e0a8a_ref /* PlantingCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantingCalendarView.swift; sourceTree = "<group>"; };
+		cb6553df-d044-5c57-a578-606426fc8c53_ref /* PointCloudProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudProcessor.swift; sourceTree = "<group>"; };
+		dffb3014-56a2-5d8d-94f4-a160fb46c82f_ref /* ScanCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCaptureView.swift; sourceTree = "<group>"; };
+		57d06119-404f-5bb4-910e-fca8a865a635_ref /* SeedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedRecord.swift; sourceTree = "<group>"; };
+		d190e9b4-c3e0-5a77-9414-2cbf306cd85f_ref /* SeedScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedScannerView.swift; sourceTree = "<group>"; };
+		b2a46d72-2ab5-5b42-8795-d3f3ed7faeb0_ref /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		25e2b0f5-0b2f-58cf-9dd8-2a26ecc77210_ref /* SurfaceZoneEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceZoneEditorView.swift; sourceTree = "<group>"; };
+		c26cbc79-940b-5381-b84a-e2363a55123e_ref /* SurfaceZoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceZoneModel.swift; sourceTree = "<group>"; };
+		f9158f92-7eb0-5db8-a8b5-eaf2df91f0f8_ref /* SyncRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRepository.swift; sourceTree = "<group>"; };
+		8df4b24a-0438-5bd3-855e-20ee9b9179d6_ref /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		6ab62b38-5b4c-5c0c-8e61-d2be90d293ac_ref /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
+		e3be16ba-f1d6-576c-9ec7-3be5f7e101a7_ref /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
+		2560f2c0-5a3f-5a0d-a92d-0ac4f2efc72c_ref /* VarietyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarietyModel.swift; sourceTree = "<group>"; };
+		12cb3db5-478e-5f8e-8820-678be28dc098_ref /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		7d2ba2f5-d030-5218-9740-1101a9842d71_ref /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
+		ca3ba7a4-a147-54f2-9726-5ba911d1825a_ref /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = .text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		e397a332-26d2-5c9a-9295-de57a8b494a5_ref /* plants.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = plants.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+	ba802192-2398-50e0-95ef-838c9a90e2a2 /* GardenPlanner */ = {
+		isa = PBXGroup;
+		children = (
+			89670420-3567-5de6-9a0a-032905aa9665,
+		);
+		sourceTree = "<group>";
+	}};
+	89670420-3567-5de6-9a0a-032905aa9665 /* GardenPlanner */ = {
+		isa = PBXGroup;
+		children = (
+			5287ad03-9c75-5aeb-8a11-ce3e4695e33d,
+			852392ee-a917-5823-8be1-62c8cf9371ed,
+		);
+		name = GardenPlanner;
+		sourceTree = "<group>";
+	}};
+	5287ad03-9c75-5aeb-8a11-ce3e4695e33d /* Sources */ = {
+		isa = PBXGroup;
+		children = (
+			1dd2ff0e-de03-5f69-88a9-0e2568ee7282_ref;
+			3b679a9e-c735-5f56-9ad4-9dd2d0e41646_ref;
+			2ebebffe-694b-55f4-a5e9-afdba14254cf_ref;
+			1fe67665-af28-5997-8944-bac36c4ef407_ref;
+			f2454601-214f-56dc-bbe6-f1b37a6baf6c_ref;
+			12236aa0-a6b2-5e88-a213-cc2c8b889d35_ref;
+			fb23fb58-5515-51f6-a3fb-8c37298b06af_ref;
+			fe00471c-040f-556d-96f9-bda385542f8d_ref;
+			ba609b53-58f2-5224-bad0-e8ae787b16f5_ref;
+			eddf63b7-67f2-5ce8-a227-d01d6771cbe0_ref;
+			534592b7-3321-5754-a6a3-a56d0898020e_ref;
+			a24041d0-e73c-54d9-ac1e-89032fc7810e_ref;
+			b01bfb7c-d338-5bac-80d5-e9a125b6aa93_ref;
+			f158a45e-3ea5-5c6c-8521-7447c75f0355_ref;
+			f8ac9426-9022-5300-b3e1-1e145682b1c2_ref;
+			a27c41d5-65d7-5e3b-9a2a-330aae1cba06_ref;
+			f1795305-9cce-5a53-aaee-671596df460d_ref;
+			76d64a9e-e019-5ca8-9b9d-901510d896a5_ref;
+			86f9cb7a-afac-5462-9c7a-aae083d986db_ref;
+			10fe0536-522f-5bb2-82a8-9928b8c207a6_ref;
+			b78077a8-14a3-5a9b-8925-66c1380a7c2a_ref;
+			353fd259-8941-54ad-83d3-af62414e0a8a_ref;
+			cb6553df-d044-5c57-a578-606426fc8c53_ref;
+			dffb3014-56a2-5d8d-94f4-a160fb46c82f_ref;
+			57d06119-404f-5bb4-910e-fca8a865a635_ref;
+			d190e9b4-c3e0-5a77-9414-2cbf306cd85f_ref;
+			b2a46d72-2ab5-5b42-8795-d3f3ed7faeb0_ref;
+			25e2b0f5-0b2f-58cf-9dd8-2a26ecc77210_ref;
+			c26cbc79-940b-5381-b84a-e2363a55123e_ref;
+			f9158f92-7eb0-5db8-a8b5-eaf2df91f0f8_ref;
+			8df4b24a-0438-5bd3-855e-20ee9b9179d6_ref;
+			6ab62b38-5b4c-5c0c-8e61-d2be90d293ac_ref;
+			e3be16ba-f1d6-576c-9ec7-3be5f7e101a7_ref;
+			2560f2c0-5a3f-5a0d-a92d-0ac4f2efc72c_ref;
+			12cb3db5-478e-5f8e-8820-678be28dc098_ref;
+			7d2ba2f5-d030-5218-9740-1101a9842d71_ref;
+		);
+		name = Sources;
+		sourceTree = "<group>";
+	}};
+	852392ee-a917-5823-8be1-62c8cf9371ed /* Resources */ = {
+		isa = PBXGroup;
+		children = (
+			ca3ba7a4-a147-54f2-9726-5ba911d1825a_ref;
+			e397a332-26d2-5c9a-9295-de57a8b494a5_ref;
+		);
+		name = Resources;
+		sourceTree = "<group>";
+	}};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+	af66c7c1-575e-59e6-90e0-870536bef477 /* GardenPlanner */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 68a9ad4a-e182-5b97-af92-12fe1ee0ccde;
+		buildPhases = (
+			5bd4e211-50ad-570a-933d-4cd1b00f7c5b,
+			191f844c-3789-50fb-b80b-92a3f2ea6f42,
+		);
+		buildRules = ()
+		dependencies = ()
+		name = GardenPlanner;
+		productReference = 2adf7a4e-fbf1-57db-8fc6-dbc16a35e41d;
+		productType = "com.apple.product-type.application";
+	}};
+	2adf7a4e-fbf1-57db-8fc6-dbc16a35e41d /* GardenPlanner.app */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.application";
+		name = GardenPlanner.app;
+		path = GardenPlanner/GardenPlanner.app;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	}};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+	eb375a6a-01bc-5cb0-8623-d586c7a496c6 /* Project object */ = {
+		isa = PBXProject;
+		attributes = {
+			BuildIndependentTargetsInParallel = 1;
+			DevelopmentRegion = en;
+		};
+		debugConfigurationList = 19907032-cd21-5158-a8e1-865657841c8a;
+		mainGroup = ba802192-2398-50e0-95ef-838c9a90e2a2;
+		projectRoot = "";
+		targets = (
+			af66c7c1-575e-59e6-90e0-870536bef477,
+		);
+	}};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+	5bd4e211-50ad-570a-933d-4cd1b00f7c5b = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			1dd2ff0e-de03-5f69-88a9-0e2568ee7282_build;
+			3b679a9e-c735-5f56-9ad4-9dd2d0e41646_build;
+			2ebebffe-694b-55f4-a5e9-afdba14254cf_build;
+			1fe67665-af28-5997-8944-bac36c4ef407_build;
+			f2454601-214f-56dc-bbe6-f1b37a6baf6c_build;
+			12236aa0-a6b2-5e88-a213-cc2c8b889d35_build;
+			fb23fb58-5515-51f6-a3fb-8c37298b06af_build;
+			fe00471c-040f-556d-96f9-bda385542f8d_build;
+			ba609b53-58f2-5224-bad0-e8ae787b16f5_build;
+			eddf63b7-67f2-5ce8-a227-d01d6771cbe0_build;
+			534592b7-3321-5754-a6a3-a56d0898020e_build;
+			a24041d0-e73c-54d9-ac1e-89032fc7810e_build;
+			b01bfb7c-d338-5bac-80d5-e9a125b6aa93_build;
+			f158a45e-3ea5-5c6c-8521-7447c75f0355_build;
+			f8ac9426-9022-5300-b3e1-1e145682b1c2_build;
+			a27c41d5-65d7-5e3b-9a2a-330aae1cba06_build;
+			f1795305-9cce-5a53-aaee-671596df460d_build;
+			76d64a9e-e019-5ca8-9b9d-901510d896a5_build;
+			86f9cb7a-afac-5462-9c7a-aae083d986db_build;
+			10fe0536-522f-5bb2-82a8-9928b8c207a6_build;
+			b78077a8-14a3-5a9b-8925-66c1380a7c2a_build;
+			353fd259-8941-54ad-83d3-af62414e0a8a_build;
+			cb6553df-d044-5c57-a578-606426fc8c53_build;
+			dffb3014-56a2-5d8d-94f4-a160fb46c82f_build;
+			57d06119-404f-5bb4-910e-fca8a865a635_build;
+			d190e9b4-c3e0-5a77-9414-2cbf306cd85f_build;
+			b2a46d72-2ab5-5b42-8795-d3f3ed7faeb0_build;
+			25e2b0f5-0b2f-58cf-9dd8-2a26ecc77210_build;
+			c26cbc79-940b-5381-b84a-e2363a55123e_build;
+			f9158f92-7eb0-5db8-a8b5-eaf2df91f0f8_build;
+			8df4b24a-0438-5bd3-855e-20ee9b9179d6_build;
+			6ab62b38-5b4c-5c0c-8e61-d2be90d293ac_build;
+			e3be16ba-f1d6-576c-9ec7-3be5f7e101a7_build;
+			2560f2c0-5a3f-5a0d-a92d-0ac4f2efc72c_build;
+			12cb3db5-478e-5f8e-8820-678be28dc098_build;
+			7d2ba2f5-d030-5218-9740-1101a9842d71_build;
+			ca3ba7a4-a147-54f2-9726-5ba911d1825a_build;
+			e397a332-26d2-5c9a-9295-de57a8b494a5_build;
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	}};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+	191f844c-3789-50fb-b80b-92a3f2ea6f42 = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = ()
+		runOnlyForDeploymentPostprocessing = 0;
+	}};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+	19907032-cd21-5158-a8e1-865657841c8a /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INFINITE_RECURSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AWAY;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = dwarf;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		ENABLE_TESTABILITY = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_DYNAMIC_NO_PIC = NO;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_OPTIMIZATION_LEVEL = 0;
+		GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1",);
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+		MTL_FAST_MATH = YES;
+		ONLY_ACTIVE_ARCH = YES;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = iphoneos;
+		SUPPORTED_PLATFORMS.poposx = macosx;
+	};
+	name = Debug;
+	}};
+	0dc514b3-6a57-5ca4-aed9-5b8144110489 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		CLANG_ENABLE_OBJC_WEAK = YES;
+		CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+		CLANG_WARN_BOOL_CONVERSION = YES;
+		CLANG_WARN_COMMA = YES;
+		CLANG_WARN_CONSTANT_CONVERSION = YES;
+		CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+		CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+		CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+		CLANG_WARN_EMPTY_BODY = YES;
+		CLANG_WARN_ENUM_CONVERSION = YES;
+		CLANG_WARN_INFINITE_RECURSION = YES;
+		CLANG_WARN_INT_CONVERSION = YES;
+		CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+		CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+		CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+		CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+		CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+		CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+		CLANG_WARN_SIGN_CONVERSION = YES;
+		CLANG_WARN_STRICT_PROTOTYPES = YES;
+		CLANG_WARN_SUSPICIOUS_MOVE = YES;
+		CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AWAY;
+		CLANG_WARN_UNREACHABLE_CODE = YES;
+		CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+		ENABLE_NS_ASSERTIONS = NO;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		ENABLE_USER_SCRIPT_SANDBOXING = YES;
+		GCC_C_LANGUAGE_STANDARD = gnu17;
+		GCC_NO_COMMON_BLOCKS = YES;
+		GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+		GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+		GCC_WARN_UNDECLARED_SELECTOR = YES;
+		GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+		GCC_WARN_UNUSED_FUNCTION = YES;
+		GCC_WARN_UNUSED_VARIABLE = YES;
+		IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+		MTL_ENABLE_DEBUG_INFO = NO;
+		MTL_FAST_MATH = YES;
+		SDKROOT = iphoneos;
+		SUPPORTED_PLATFORMS = iphoneos;
+		SUPPORTED_PLATFORMS.poposx = macosx;
+	};
+	name = Release;
+	}};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+	68a9ad4a-e182-5b97-af92-12fe1ee0ccde /* Build configuration list for PBXNativeTarget "GardenPlanner" */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 2;
+		DEVELOPMENT_TEAM = "TEAM_ID_PLACEHOLDER";  # ← SET YOUR TEAM ID HERE (find in Xcode: Signing & Capabilities)
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_KEY_CFBundleDisplayName = "3D Garden Planner";
+		INFOPLIST_KEY_NSCameraUsageDescription = "GardenPlanner uses your camera for LiDAR scanning and AR-based garden mapping. This captures your garden layout, surfaces, and heights for planning plant placement.";
+		INFOPLIST_KEY_NSLocalNetworkUsageDescription = "GardenPlanner uses local network for optional CloudKit sync to back up your garden plans across your Apple devices.";
+		INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "GardenPlanner needs your location to provide local weather and frost date information for your garden.";
+		INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = com.josephwoods.GardenPlanner;
+		PRODUCT_NAME = "$(TARGET_NAME)"
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.9;
+		TARGETED_DEVICE_FAMILY = "1,2";
+	};
+	name = Debug;
+	}};
+	68a9ad4a-e182-5b97-af92-12fe1ee0ccde_release = 68a9ad4a-e182-5b97-af92-12fe1ee0ccde
+/* End XCConfigurationList section */
+
+};
+rootObject = "eb375a6a-01bc-5cb0-8623-d586c7a496c6"; /* eb375a6a-01bc-5cb0-8623-d586c7a496c6 */
+}

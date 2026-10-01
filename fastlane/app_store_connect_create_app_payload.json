@@ -1,0 +1,17 @@
+{
+  "data": {
+    "type": "apps",
+    "attributes": {
+      "bundleId": "com.josephwoods.GardenPlanner",
+      "name": "3D Garden Planner",
+      "sku": "GARDEN-PLANNER-ALPHA-001",
+      "primaryLocale": "en-US",
+      "platform": "IOS"
+    },
+    "relationships": {
+      "appStoreVersions": {
+        "data": []
+      }
+    }
+  }
+}

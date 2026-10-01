@@ -1,0 +1,10 @@
+# Gymfile for Garden Planner
+scheme "GardenPlanner"
+project "GardenPlanner/GardenPlanner.xcodeproj"
+workspace nil
+export_method "ad-hoc"
+output_name "GardenPlanner"
+clean true
+include_symbols true
+include_bitcode false
+skip_codesigning false

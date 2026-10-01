@@ -1,0 +1,129 @@
+default_platform(:ios)
+
+# =============================================================================
+# GardenPlanner TestFlight Build Configuration
+# =============================================================================
+# Prerequisites:
+#   1. Open Xcode and set your DEVELOPMENT_TEAM (Signing & Capabilities tab)
+#   2. Create app record at https://appstoreconnect.apple.com with bundle ID com.josephwoods.GardenPlanner
+#   3. (Optional) Configure API key in fastlane/app_store_connect_api_key.json for automated upload
+# =============================================================================
+
+PLATFORM = :ios
+XCODE_PROJ = "GardenPlanner/GardenPlanner.xcodeproj"
+BUNDLE_ID = "com.josephwoods.GardenPlanner"
+
+platform PLATFORM do
+
+  # =========================================================================
+  # TESTFLIGHT BETA UPLOAD LANE (Automated — requires API key)
+  # Builds, signs, and uploads directly to TestFlight
+  # =========================================================================
+  desc "Build and upload to TestFlight (requires API key)"
+  lane :beta do
+    ensure_git_status_clean
+    increment_build_number(xcodeproj: XCODE_PROJ)
+    
+    gym(
+      scheme: "GardenPlanner",
+      project: XCODE_PROJ,
+      export_method: "app-store",
+      include_bitcode: false,
+      output_name: "GardenPlanner.ipa",
+      configuration: "Release",
+      clean: true,
+      skip_codesigning: false
+    )
+    
+    pilot(
+      api_key_path: "app_store_connect_api_key.json",
+      app_identifier: BUNDLE_ID,
+      skip_waiting_for_build_processing: true,
+      distribute_external: true
+    )
+    
+    UI.message("✅ TestFlight upload complete!")
+  end
+
+  # =========================================================================
+  # MANUAL IPA EXPORT LANE (No API key needed — for drag-and-drop upload)
+  # Builds and exports an .ipa file to fastlane/output/
+  # You can then drag-drop this .ipa into Apple's Developer Portal.
+  # =========================================================================
+  desc "Build an .ipa file for manual TestFlight upload (drag-and-drop)"
+  lane :export_ipa do
+    ensure_git_status_clean
+    
+    gym(
+      scheme: "GardenPlanner",
+      project: XCODE_PROJ,
+      export_method: "app-store",
+      include_bitcode: false,
+      output_directory: "output",
+      output_name: "GardenPlanner.ipa",
+      configuration: "Release",
+      clean: true,
+      skip_codesigning: false
+    )
+    
+    ipa_path = "output/GardenPlanner.ipa"
+    
+    if File.exist?(ipa_path)
+      file_size = File.size(ipa_path)
+      size_mb = file_size / 1_048_576.0
+      UI.message("✅ IPA exported successfully!")
+      UI.message("   Path: #{ipa_path}")
+      UI.message("   Size: #{size_mb.round(1)} MB")
+      UI.message("")
+      UI.message("To upload to TestFlight, you can:")
+      UI.message("  1. Go to https://appstoreconnect.apple.com → My Apps → Your App → TestFlight")
+      UI.message("     Click the + button in Builds, then drag-drop the .ipa file")
+      UI.message("")
+      UI.message("  2. Or use Apple's Transporter app:")
+      UI.message("     Download from: https://apps.apple.com/us/app/transporter/id1450874784")
+      UI.message("     Drag the .ipa onto Transporter and select '3D Garden Planner'")
+    else
+      raise "IPA not found at #{ipa_path}. Check the build logs above."
+    end
+  end
+
+  # =========================================================================
+  # SIMULATOR BUILD (No signing required — for local testing)
+  # =========================================================================
+  desc "Build for simulator (no signing, not for device)"
+  lane :simulator do
+    gym(
+      scheme: "GardenPlanner",
+      project: XCODE_PROJ,
+      configuration: "Debug",
+      skip_codesigning: true,
+      output_name: "GardenPlanner-simulator"
+    )
+    
+    UI.message("✅ Simulator build complete!")
+    UI.message("   Run from Xcode instead for the best simulator experience.")
+  end
+
+  # =========================================================================
+  # CREATE APP RECORD (if not yet created in App Store Connect)
+  # Requires: API key configured in fastlane/app_store_connect_api_key.json
+  # =========================================================================
+  desc "Create the app record in App Store Connect"
+  lane :create_app_record do
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_path: "app_store_connect_api_key.json"
+    )
+
+    create_app(
+      platform: "ios",
+      bundle_id: BUNDLE_ID,
+      name: "3D Garden Planner",
+      language: "en-US",
+      preview_types: ["iPhone", "iPad"]
+    )
+
+    UI.message("✅ App record created! Now you can upload builds.")
+  end
+end

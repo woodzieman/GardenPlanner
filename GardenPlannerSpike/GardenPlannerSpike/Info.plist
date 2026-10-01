@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>GardenPlanner uses your camera for LiDAR scanning and AR-based garden mapping. This captures your garden's layout, surfaces, and heights for planning plant placement.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>GardenPlanner uses local network for optional CloudKit sync to backup your garden plans across your Apple devices.</string>
+</dict>
+</plist>
