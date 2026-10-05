@@ -4,9 +4,11 @@
     "attributes": {
       "bundleId": "com.josephwoods.GardenPlanner",
       "name": "3D Garden Planner",
-      "sku": "GARDEN-PLANNER-ALPHA-001",
+      "sku": "GARDEN-PLANNER-2.0.0",
       "primaryLocale": "en-US",
-      "platform": "IOS"
+      "platform": "IOS",
+      "privacyPolicyUrl": "https://woodzieman.github.io/GardenPlanner/privacy.html",
+      "marketingUrl": "https://woodzieman.github.io/GardenPlanner/marketing.html"
     },
     "relationships": {
       "appStoreVersions": {

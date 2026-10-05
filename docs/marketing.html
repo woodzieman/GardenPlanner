@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Garden Planner — Beautiful Garden Maps from Your Phone</title>
+  <meta name="description" content="3D Garden Planner helps gardeners capture, map, and plan outdoor growing spaces using their iPhone's camera and LiDAR.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #fafafa; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Header / Hero */
+    header { background: linear-gradient(135deg, #2d5016 0%, #4a8c2a 100%); color: white; text-align: center; padding: 80px 20px 60px; }
+    header h1 { font-size: 2.5em; margin-bottom: 16px; }
+    header p { font-size: 1.2em; max-width: 600px; margin: 0 auto 30px; opacity: 0.9; }
+    .btn { display: inline-block; background: white; color: #2d5016; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 1.1em; transition: transform 0.2s; }
+    .btn:hover { transform: scale(1.05); }
+    
+    /* Features */
+    section { padding: 60px 0; }
+    section h2 { text-align: center; color: #2d5016; font-size: 2em; margin-bottom: 40px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .feature { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+    .feature .icon { font-size: 2.5em; margin-bottom: 15px; }
+    .feature h3 { color: #2d5016; margin-bottom: 10px; }
+    
+    /* How it works */
+    .steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; }
+    .step { flex: 1; min-width: 200px; text-align: center; }
+    .step .num { background: #2d5016; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em; margin: 0 auto 15px; }
+    
+    /* CTA */
+    .cta { background: #2d5016; color: white; text-align: center; padding: 60px 20px; }
+    .cta h2 { color: white; margin-bottom: 20px; }
+    .cta .btn { background: white; color: #2d5016; }
+    
+    footer { text-align: center; padding: 30px 20px; color: #888; font-size: 0.9em; }
+    footer a { color: #2d5016; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🌿 3D Garden Planner</h1>
+      <p>Capture, map, and plan your outdoor growing spaces — using just your iPhone.</p>
+      <a href="https://apps.apple.com/app/id placeholder" class="btn">Available on the App Store</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Scan</h3>
+          <p>Walk around your garden with your iPhone. LiDAR-enabled models create a 3D point cloud in seconds.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Map</h3>
+          <p>The app automatically extracts a 2D top-down garden boundary and elevation heightmap.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Plan</h3>
+          <p>Place plants, set companion pairs, track harvests, and get frost-date alerts for your zone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: #f5f5f5;">
+    <div class="container">
+      <h2>Key Features</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="icon">📷</div>
+          <h3>LiDAR Garden Scanning</h3>
+          <p>On iPhone Pro models, capture your garden space with depth data and LiDAR for accurate garden maps.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🌱</div>
+          <h3>121 Plant Database</h3>
+          <p>Comprehensive database of 50 vegetables, 71 flowers, and herbs with planting guides.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📦</div>
+          <h3>Barcode Scanning</h3>
+          <p>Scan seed packet barcodes (GP#####00 format) to quickly add plants to your garden.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🌡️</div>
+          <h3>Frost Alerts</h3>
+          <p>Custom frost-date calculator with 7-day weather forecasts and planting window recommendations.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">☁️</div>
+          <h3>CloudKit Sync</h3>
+          <p>Optional, encrypted sync across your Apple devices. Your data stays in your iCloud.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📓</div>
+          <h3>Journals & Harvests</h3>
+          <p>Per-plant journal entries, task lists, yield logs, and seasonal analytics.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div class="container">
+      <h2>Start Planning Your Garden Today</h2>
+      <p>Free to use. No account required. All data stays on your device.</p>
+      <br>
+      <a href="https://apps.apple.com/app/id placeholder" class="btn">Download on the App Store</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>3D Garden Planner — Built with SwiftUI, ARKit, and LiDAR.</p>
+      <p><a href="privacy.html">Privacy Policy</a> · <a href="https://github.com/woodzieman/GardenPlanner">GitHub</a></p>
+      <p>© 2026 Joseph Woods</p>
+    </div>
+  </footer>
+</body>
+</html>
