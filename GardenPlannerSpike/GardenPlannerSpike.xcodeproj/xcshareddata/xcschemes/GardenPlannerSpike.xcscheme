@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeCheck = "1750" version = "1.7">
-  <BuildAction parallelizeBuildables = "1" buildImplicitDependencies = "1" runPostActionsOnSuccess = "1">
-    <ExpandFromTarget name = "GardenPlannerSpike" buildForTesting = "1" buildForRunning = "1" buildForProfiling = "1" buildForArchiving = "1" buildForAnalyzing = "1">
-      <Target name = "GardenPlannerSpike">
-        <BuildableProductRunnable runnable = "Debug">
-          <BuildableReference buildProductLocation = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Debug-iphonesimulator/GardenPlannerSpike.app" buildProductName = "GardenPlannerSpike" buildProductType = "com.apple.product-type.application" platformIdentifier = "com.apple.platform.iphoneos">
-          </BuildableReference>
-        </BuildableProductRunnable>
-      </Target>
-    </ExpandFromTarget>
+  <BuildAction parallelizeBuildables = "YES" buildImplicitDependencies = "YES" onlyForDevelopmentPostprocessing = "0">
+    <BuildActionEntries>
+      <BuildActionEntry buildForTesting = "YES" buildForRunning = "YES" buildForProfiling = "YES" buildForArchiving = "YES" buildForAnalyzing = "YES">
+        <BuildableReference
+          BuildableIdentifier = "primary"
+          BlueprintIdentifier = "696a7b353813c3ca71f6cf47"
+          BuildableName = "GardenPlannerSpike.app"
+          BlueprintName = "GardenPlannerSpike"
+          ReferencedContainer = "container:GardenPlannerSpike.xcodeproj">
+        </BuildableReference>
+      </BuildActionEntry>
+    </BuildActionEntries>
   </BuildAction>
   <TestAction buildConfiguration = "Debug" selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB" symbolSeparationFile = "" shouldUseLaunchSchemeArgsEnv = "1" compiledBinaryPath = "/Users/josephwoods/Documents/Garden planner app/GardenPlannerSpike/build/Debug-iphonesimulator/GardenPlannerSpike" shouldAutoCreateTestReport = "0" shouldAutoCreateCoverageReport = "0">
     <ExpandFromTarget name = "GardenPlannerSpike" runPostActionsOnSuccess = "1">

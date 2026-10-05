@@ -9,11 +9,6 @@ struct HarvestView: View {
     @Query(sort: \Garden.name) private var gardens: [Garden]
     @State private var showingNewHarvest = false
     
-    private var currentSeason: String {
-        let month = Calendar.current.component(.month, from: Date())
-        return month >= 4 && month <= 9 ? "Spring-Summer 2026" : "Fall-Winter 2025-26"
-    }
-    
     var body: some View {
         NavigationStack {
             List {

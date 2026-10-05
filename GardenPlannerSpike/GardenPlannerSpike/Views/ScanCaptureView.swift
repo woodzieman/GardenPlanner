@@ -65,32 +65,23 @@ struct ScanCaptureView: View {
         switch scanner.status {
         case .idle:
             Text("Tap \"Start Scan\", then walk slowly around your garden\nfor 10–20 seconds. Cover all edges of planting areas.")
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding()
-                .background(.quaternary.opacity(0.2))
-                .cornerRadius(8)
+                .font(.headline)
                 
         case .capturing:
             Text("📸 Scanning — walk around your garden space...")
                 .font(.headline)
-                .foregroundColor(.white)
                 
         case .processing:
             Text("🔍 Processing point cloud and building 2D map...")
                 .font(.headline)
-                .foregroundColor(.white)
                 
         case .ready:
             Text("✅ Scan complete!")
                 .font(.headline)
-                .foregroundColor(.green)
                 
         case .error(let message):
             Text("❌ Error: \(message)")
-                .font(.caption)
-                .foregroundColor(.red)
+                .font(.headline)
         }
     }
     
@@ -151,20 +142,16 @@ struct CameraPreviewView: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
         
-        // Configure the session with scene reconstruction
+        // iOS 27: use frameSemantics instead of removed sceneReconstruction / supportedScenes
         let configuration = ARWorldTrackingConfiguration()
         configuration.worldAlignment = .gravity
         
-        // Check what's available
-        if ARWorldTrackingConfiguration.supportedScenes.contains(.mesh) {
-            configuration.sceneReconstruction = .mesh
-            print("✅ Mesh reconstruction available")
-        } else if ARWorldTrackingConfiguration.supportedScenes.contains(.deviceDepth) {
-            configuration.sceneReconstruction = .deviceDepth
-            print("⚠ Only device depth (no LiDAR mesh)")
+        // Enable scene depth if available (LiDAR or stereo)
+        if ARWorldTrackingConfiguration.supportsFrameSemantics([.sceneDepth]) {
+            configuration.frameSemantics = [.sceneDepth]
+            print("✅ Scene depth enabled")
         } else {
-            configuration.sceneReconstruction = .localMapped
-            print("ℹ️ Local mapping only")
+            print("⚠ No depth data available")
         }
         
         // Add an overlay showing capture guidance
@@ -178,14 +165,9 @@ struct CameraPreviewView: UIViewRepresentable {
             overlayView.bottomAnchor.constraint(equalTo: arView.bottomAnchor)
         ])
         
-        // Start the session
-        Task {
-            do {
-                try await arView.session.run(configuration)
-            } catch {
-                print("Session start error: \(error)")
-            }
-        }
+        // Start the session (non-throwing in simulator)
+        arView.session.run(configuration)
+        print("Session started")
         
         return arView
     }

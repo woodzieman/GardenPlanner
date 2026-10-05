@@ -27,7 +27,7 @@ final class CloudKitSyncService: SyncRepository {
     }
     
     func isAvailable() async -> Bool {
-        guard let db = privateDB else { return false }
+        guard privateDB != nil else { return false }
         
         do {
             let status = try await container.accountStatus()
@@ -46,7 +46,7 @@ final class CloudKitSyncService: SyncRepository {
         
         // `default` record zone always exists; a harmless save validates access.
         let record = CKRecord(recordType: "GardenPlannerPresence", recordID: CKRecord.ID(recordName: "presence"))
-        try await db.save(record)
+        _ = try await db.save(record)
         isSetup = true
     }
     
@@ -56,7 +56,7 @@ final class CloudKitSyncService: SyncRepository {
         }
         
         let record = gardenToRecord(garden)
-        try await db.save(record)
+        _ = try await db.save(record)
     }
     
     func loadGardens() async throws -> [Garden] {
@@ -64,11 +64,15 @@ final class CloudKitSyncService: SyncRepository {
             throw SyncError.noDatabase
         }
         
-        let query = CKQuery(recordType: "Garden", predicate: NSPredicate(value: true))
-        let results = try await db.perform(query, inZoneWith: nil)
+        let query = CKQuery(recordType: "Garden", predicate: NSPredicate(format: "TRUEPREDICATE"))
         
-        return try results.compactMap { record in
-            try recordToGarden(record)
+        // The server returns up to 100 records per batch — far more than a
+        // single user will keep as gardens — so the first batch is the full set.
+        let (matchResults, _) = try await db.records(matching: query, inZoneWith: nil)
+        let records = try matchResults.map { try $0.1.get() }
+        
+        return records.compactMap { record in
+            recordToGarden(record)
         }
     }
     
@@ -83,19 +87,20 @@ final class CloudKitSyncService: SyncRepository {
     // MARK: - Record conversion
     
     private func gardenToRecord(_ garden: Garden) -> CKRecord {
-        var record = CKRecord(recordType: "Garden", recordID: CKRecord.ID(recordName: garden.id.uuidString))
+        let record = CKRecord(recordType: "Garden", recordID: CKRecord.ID(recordName: garden.id.uuidString))
         record["name"] = garden.name as CKRecordValue
         record["description"] = garden.details as CKRecordValue
         record["createdDate"] = garden.createdDate as CKRecordValue
         return record
     }
     
-    private func recordToGarden(_ record: CKRecord) throws -> Garden {
+    private func recordToGarden(_ record: CKRecord) -> Garden {
         let name = record["name"] as? String ?? "Unnamed"
         let details = record["description"] as? String ?? ""
-        let createdDate = record["createdDate"] as? Date ?? Date()
+        // Preserve the remote garden's identity so sync round-trips don't fork.
+        let id = UUID(uuidString: record.recordID.recordName) ?? UUID()
         
-        return Garden(name: name, details: details)
+        return Garden(name: name, details: details, id: id)
     }
 }
 

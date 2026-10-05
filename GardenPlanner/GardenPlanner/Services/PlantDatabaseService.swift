@@ -7,14 +7,19 @@ import Foundation
 /// ~150 plants / 600+ varieties from the start.
 
 struct PlantDatabaseService {
-    static let version = "1.0.0"
-    static let plantCount: Int = 150  // initial target
-    static let varietyCount: Int = 600  // initial target
+    static let version = "2.0.0"
+
+    /// Session cache — the bundled database is static, so decoding once and
+    /// reusing keeps search and list views fast.
+    private static var cachedVarieties: [Variety]?
     
-    /// Load all varieties from the bundled JSON file.
+    /// Load all varieties from the bundled JSON file (cached after first load).
     static func loadVarieties() -> [Variety] {
+        if let cached = cachedVarieties { return cached }
+        
         guard let url = Bundle.main.url(forResource: "plants", withExtension: "json") else {
             print("⚠️ plants.json not found in bundle — using demo data")
+            cachedVarieties = demoVarieties
             return demoVarieties
         }
         
@@ -24,9 +29,11 @@ struct PlantDatabaseService {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             
             let wrapped = try decoder.decode(VarietyListWrapper.self, from: data)
+            cachedVarieties = wrapped.varieties
             return wrapped.varieties
         } catch {
             print("⚠️ Failed to load plants.json: \(error.localizedDescription)")
+            cachedVarieties = demoVarieties
             return demoVarieties
         }
     }

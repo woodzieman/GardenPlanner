@@ -86,17 +86,22 @@ struct TopDownMapView: View {
             let mapWidth = maxX > minX ? width : width
             let mapHeight = maxZ > minZ ? width * (maxZ - minZ) / (maxX > minX ? (maxX - minX) : 1) : width * 0.6
             
-            Canvas { context, rect in
+            Canvas { context, size in
+                // iOS 27: Canvas closure receives CGSize, construct CGRect
+                let r = CGRect(origin: .zero, size: size).insetBy(dx: 10, dy: 10)
+                
                 // Background
-                context.fill(Path(rect), with: .color(.quaternary.opacity(0.2)))
+                var bgPath = Path()
+                bgPath.addRect(r)
+                context.fill(bgPath, with: .color(.gray.opacity(0.2)))
                 
                 // Draw the garden boundary
                 if !boundary.isEmpty {
                     var path = Path()
                     
                     for (i, point) in boundary.enumerated() {
-                        let x = rect.minX + (point[0] - minX) / (maxX - minX > 0 ? (maxX - minX) : 1) * (rect.width - 20)
-                        let y = rect.minY + (point[1] - minZ) / (maxZ - minZ > 0 ? (maxZ - minZ) : 1) * (rect.height - 20)
+                        let x = r.minX + (point[0] - minX) / (maxX - minX > 0 ? (maxX - minX) : 1) * (r.width - 20)
+                        let y = r.minY + (point[1] - minZ) / (maxZ - minZ > 0 ? (maxZ - minZ) : 1) * (r.height - 20)
                         
                         if i == 0 {
                             path.move(to: CGPoint(x: x, y: y))
@@ -115,15 +120,15 @@ struct TopDownMapView: View {
                     // Only draw dense clouds if we have few enough points
                     var dotPath = Path()
                     for point in pointCloud {
-                        let x = rect.minX + (Double(point.x) - minX) / (maxX - minX > 0 ? (maxX - minX) : 1) * (rect.width - 20)
-                        let y = rect.minY + (Double(point.z) - minZ) / (maxZ - minZ > 0 ? (maxZ - minZ) : 1) * (rect.height - 20)
-                        dotPath.addEllipse(at: CGPoint(x: x, y: y), width: 1, height: 1)
+                        let x = r.minX + (Double(point.x) - minX) / (maxX - minX > 0 ? (maxX - minX) : 1) * (r.width - 20)
+                        let y = r.minY + (Double(point.z) - minZ) / (maxZ - minZ > 0 ? (maxZ - minZ) : 1) * (r.height - 20)
+                        dotPath.addEllipse(in: CGRect(x: x - 0.5, y: y - 0.5, width: 1, height: 1))
                     }
                     context.fill(dotPath, with: .color(.gray.opacity(0.5)))
                 }
             }
             .frame(width: mapWidth, height: min(mapHeight, 400))
-            .aspectRatio(1, contentMode: fit)
+            .aspectRatio(1, contentMode: .fit)
         }
         .frame(height: 300)
         .padding()
@@ -144,11 +149,12 @@ struct HeightMapView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             
-            Canvas { context, rect in
+            Canvas { context, size in
                 guard !heightmap.isEmpty else { return }
                 
-                let cellWidth = rect.width / Float(gridSize)
-                let cellHeight = rect.height / Float(gridSize)
+                let r = CGRect(origin: .zero, size: size)
+                let cellWidth = r.width / CGFloat(gridSize)
+                let cellHeight = r.height / CGFloat(gridSize)
                 
                 let minH = heightmap.min() ?? 0
                 let maxH = heightmap.max() ?? 1
@@ -163,17 +169,15 @@ struct HeightMapView: View {
                         let t = (h - minH) / Float(range)
                         let color = elevationColor(t: Double(t))
                         
-                        context.fill(
-                            Path(
-                                rect: CGRect(
-                                    x: rect.minX + Float(x) * cellWidth,
-                                    y: rect.minY + Float(y) * cellHeight,
-                                    width: cellWidth,
-                                    height: cellHeight
-                                )
-                            ),
-                            with: .color(color)
+                        let cellRect = CGRect(
+                            x: r.minX + Double(x) * cellWidth,
+                            y: r.minY + Double(y) * cellHeight,
+                            width: cellWidth,
+                            height: cellHeight
                         )
+                        var cellPath = Path()
+                        cellPath.addRect(cellRect)
+                        context.fill(cellPath, with: .color(color))
                     }
                 }
             }
@@ -294,7 +298,7 @@ struct SurfaceZonesView: View {
         
         var results: [(type: SurfaceType, area: Double)] = []
         
-        for (label, box) in quadrants {
+        for (_, box) in quadrants {
             let regionPoints = filterByBox(points: points, box: box)
             
             guard regionPoints.count >= 20 else {
@@ -339,7 +343,7 @@ extension Color {
 struct ScanMapView_Previews: PreviewProvider {
     static var previews: some View {
         // Create a dummy garden map with a rectangular boundary
-        let boundary = [
+        let boundary: [[Double]] = [
             [0, 0], [10, 0], [10, 8], [0, 8]
         ]
         
@@ -352,7 +356,7 @@ struct ScanMapView_Previews: PreviewProvider {
             scanDuration: 15.0
         )
         
-        dummyMap.bounds = bounds // force bounds
+        _ = bounds // unused, bounds is computed from boundary
         
         return ScanMapView(
             gardenMap: dummyMap,

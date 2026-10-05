@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import CoreLocation
 
 /// Weather view — 7-day forecast with frost alerts and planting window info.
 /// Uses Open-Meteo API (free, keyless) — no server required.
@@ -50,6 +51,14 @@ struct WeatherView: View {
                     ForEach(frostAlerts) { alert in
                         AlertRow(alert: alert)
                     }
+                }
+            }
+            
+            if let error = error {
+                Section {
+                    Label(error, systemImage: "wifi.exclamationmark")
+                        .font(.caption)
+                        .foregroundStyle(.red)
                 }
             }
             
@@ -132,61 +141,50 @@ struct WeatherView: View {
               let first = garden.profile?.firstFrostDate else { return "—" }
         
         let calendar = Calendar.current
-        let lastParsed = parseFrostDate(last, calendar: calendar)
-        let firstParsed = parseFrostDate(first, calendar: calendar)
+        let lastParsed = FrostDateService.parseFrostDate(last, calendar: calendar)
+        let firstParsed = FrostDateService.parseFrostDate(first, calendar: calendar)
         
-        guard let lp = lastParsed, let fp = firstParsed else { return "—" }
+        guard let lp = lastParsed, let fp = firstParsed, fp > lp else { return "—" }
         let days = Int(fp.timeIntervalSince(lp).days)
         return "\(days)"
     }
     
-    private func parseFrostDate(_ str: String, calendar: Calendar) -> Date? {
-        let parts = str.split(separator: " ")
-        guard parts.count >= 2 else { return nil }
-        
-        let monthStr = String(parts[0])
-        let dayStr = parts[1]
-        
-        let months: [String: Int] = [
-            "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4,
-            "May": 5, "Jun": 6, "Jul": 7, "Aug": 8,
-            "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12
-        ]
-        
-        guard let month = months[monthStr], let day = Int(dayStr) else {
-            return nil
-        }
-        
-        return calendar.date(from: DateComponents(year: 2026, month: month, day: day))
-    }
-    
     private func loadWeather() async {
         loading = true
+        error = nil
         defer { loading = false }
         
         guard let garden = gardens.first,
               let profile = garden.profile,
               let location = profile.location,
-              !location.isEmpty else {
+              !location.isEmpty,
+              location.lowercased() != "auto" else {
+            error = "Add your city or ZIP in Settings → Edit Profile to get local weather."
             return
         }
         
-        // Try to geocode location (simple: use Open-Meteo geocoding-free approach)
-        // For now, assume the location is a ZIP code and use approximate coordinates
-        // In production, use a geocoding API
-        let (lat, lon) = geocodeLocation(location)
+        let (lat, lon) = await geocodeLocation(location)
         
         do {
             forecast = try await WeatherService.forecast(latitude: lat, longitude: lon)
             frostAlerts = try await WeatherService.checkFrostRisk(latitude: lat, longitude: lon)
         } catch {
-            self.error = error.localizedDescription
+            self.error = "Couldn't load the forecast: \(error.localizedDescription)"
         }
     }
     
-    private func geocodeLocation(_ location: String) -> (Double, Double) {
-        // Approximate geocoding for major US cities
-        // In production, implement a proper geocoding service
+    /// Geocode the profile location with CLGeocoder (Apple, keyless) —
+    /// handles city names and US ZIP codes. Falls back to a small city table,
+    /// then a US-center default, so the view never renders empty.
+    
+    private func geocodeLocation(_ location: String) async -> (Double, Double) {
+        // 1. Real geocoding (Apple, keyless) — works for city names and US ZIP codes.
+        let placemarks = try? await CLGeocoder().geocodeAddressString(location)
+        if let first = placemarks?.first?.location {
+            return (first.coordinate.latitude, first.coordinate.longitude)
+        }
+        
+        // 2. Fallback: approximate coordinates for major US cities.
         let cityMap: [String: (Double, Double)] = [
             "kansas": (39.0, -98.5),
             "wichita": (37.7, -97.3),

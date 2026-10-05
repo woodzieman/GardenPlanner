@@ -1,422 +1,367 @@
 import Foundation
+import Combine
 import ARKit
-import RealityKit
 import simd
+import CoreVideo
 
-/// Phase 0: Core LiDAR capture and processing module.
+/// LiDAR / ARKit garden capture and 2D-map processing.
 ///
-/// This module wraps ARKit's SceneCapture API (iOS 17+) to capture
-/// point cloud + mesh data from a garden space, then processes it
-/// to extract the ground plane and produce a 2D top-down map + heightmap.
+/// Builds a point cloud from the ARKit scene-depth buffer (LiDAR on Pro
+/// devices, stereo elsewhere) while the user walks the garden, extracts the
+/// ground plane (RANSAC), and produces a 2D top-down boundary + heightmap.
 ///
 /// Usage:
 ///   let scanner = LiDARScanner()
 ///   await scanner.startCapture()
 ///   // walk around the garden
 ///   await scanner.stopCapture()
-///   let map = await scanner.processToMap()
+///   let map = try await scanner.processToMap()
 ///
-class LiDARScanner: ObservableObject {
+final class LiDARScanner: NSObject, ObservableObject {
+    override init() {
+        super.init()
+    }
     @Published var status: ScannerStatus = .idle
     @Published var progress: Double = 0.0
     @Published var pointCloud: [SIMD3<Float>] = []
-    @Published var meshTriangles: [SIMD3<Int>] = []
     @Published var heightmap: [Float] = []
     @Published var groundPlane: Plane? = nil
-    
-    /// For non-LiDAR devices, store manual map polygon instead
+    @Published var processedMap: GardenMap? = nil
+
+    /// For non-depth devices, store the manual map polygon instead.
     @Published var manualMapPolygon: [[Double]] = []
-    
+
     var hasLiDAR: Bool = false
     var isDepthAvailable: Bool = false
-    
-    private var sceneCapture: SceneCapture? = nil
-    private var session: ARKitSession? = nil
+
+    private var session: ARSession? = nil
     private var scanStartTime: Date? = nil
-    
+    private var isCapturing = false
+    private let maxPoints = 30_000
+
     // MARK: - Public API
-    
-    /// Start a new LiDAR/ARKit capture session.
-    /// Call this before walking the garden.
+
+    /// Start a new ARKit capture session. Call this before walking the garden.
+    @MainActor
     func startCapture() async {
-        do {
-            status = .capturing
-            progress = 0.0
-            
-            // Determine capability
-            await checkCapabilities()
-            
-            // Create the session
-            session = ARKitSession()
-            
-            // Request permissions and configure
-            if hasLiDAR {
-                let config = ARWorldTrackingConfiguration()
-                config.worldAlignment = .gravityAndHeading
-                config.sceneReconstruction = .mesh
-            
-                do {
-                    try await session?.start(configuration: config)
-                } catch {
-                    status = .error(message: "Failed to start AR session: \(error.localizedDescription)")
-                    return
-                }
-            } else {
-                // Non-LiDAR path: use depth estimation from stereo cameras
-                let config = ARWorldTrackingConfiguration()
-                config.worldAlignment = .gravity
-                config.sceneReconstruction = .mesh
-            
-                do {
-                    try await session?.start(configuration: config)
-                } catch {
-                    status = .error(message: "Failed to start session: \(error.localizedDescription)")
-                    return
-                }
-            }
-            
-            scanStartTime = Date()
-            print("📸 Capture started at \(scanStartTime!, formatter: ShortDateFormatter())")
-            
-        } catch {
-            status = .error(message: error.localizedDescription)
+        await checkCapabilities()
+
+        let config = ARWorldTrackingConfiguration()
+        config.worldAlignment = hasLiDAR ? .gravityAndHeading : .gravity
+        if isDepthAvailable {
+            config.frameSemantics = [.sceneDepth]
         }
+
+        let newSession = ARSession()
+        newSession.delegate = self
+        newSession.run(config, options: [.resetTracking, .removeExistingAnchors])
+        self.session = newSession
+
+        isCapturing = true
+        scanStartTime = Date()
+        status = .capturing
+        progress = 0.0
+        print("📸 Capture started at \(Self.timestamp())")
     }
-    
-    /// Stop the capture session. Returns the raw mesh data.
-    func stopCapture() async -> ARReferenceScene? {
-        defer {
-            session = nil
-            scanStartTime = nil
+
+    /// Stop the capture session and kick off map post-processing.
+    @MainActor
+    func stopCapture() async {
+        session?.pause()
+        isCapturing = false
+        if let start = scanStartTime {
+            progress = min(1.0, Date().timeIntervalSince(start) / 60.0)
         }
-        
-        guard let session = session else {
-            return nil
-        }
-        
-        do {
-            // Save the current scene as a Reality File for later analysis
-            let documents = try FileManager.default.url(
-                for: .documentDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: false
-            )
-            
-            let sceneURL = documents.appending(path: "spike_scan.reality")
-            
-            let sceneCapture = try SceneCapture(scene: .current)
-            
-            // This gives us an ARReferenceScene with all mesh/point cloud data
-            let refScene = try await sceneCapture.saveAsRealityFile(
-                at: sceneURL
-            )
-            
-            print("✅ Scene captured: \(sceneURL.path)")
-            
-            // Now start post-processing
+
+        if !pointCloud.isEmpty {
             status = .processing
-            
-            await extractGroundAndBuildMap(scene: refScene)
-            
-            status = .ready
-            
-        } catch {
-            status = .error(message: "Capture failed: \(error.localizedDescription)")
-            print("❌ Capture error: \(error)")
+            do {
+                _ = try await processToMap()
+                status = .ready
+            } catch {
+                status = .error(message: "Processing error: \(error.localizedDescription)")
+            }
+        } else {
+            status = .error(message: "No points captured. Walk around the garden and scan again.")
         }
-        
-        return nil
     }
-    
-    /// Process the captured scene into a 2D top-down map and heightmap.
-    /// This is the core of the spike: can we get a usable garden layout?
+
+    /// Process the captured point cloud into a 2D top-down map + heightmap.
     func processToMap() async throws -> GardenMap {
         guard !pointCloud.isEmpty else {
             throw SpikeError.noPointCloud
         }
-        
+
         print("🔍 Processing \(pointCloud.count) points...")
-        
-        // Step 1: Extract ground plane using RANSAC
+
         let groundPoints = try extractGroundPlane(points: pointCloud)
-        print("  ✓ Ground plane found: \(groundPoints.count) points")
-        
-        // Step 2: Fit the ground plane (gravity-aligned)
+        print("  ✓ Ground inliers: \(groundPoints.count)")
+
         let plane = fitGroundPlane(points: groundPoints)
-        self.groundPlane = plane
-        print("  ✓ Ground plane normal: \(plane.normal), offset: \(plane.distance)")
-        
-        // Step 3: Project ground points onto 2D (top-down)
+        groundPlane = plane
+        print("  ✓ Ground plane normal \(plane.normal), offset \(plane.distance)")
+
         let projected = projectTo2D(points: groundPoints, groundPlane: plane)
         print("  ✓ Projected \(projected.count) points to 2D")
-        
-        // Step 4: Build a simple 2D polygon boundary
+
         let boundary = computeBoundary(points2D: projected)
         print("  ✓ Boundary polygon: \(boundary.count) vertices")
-        
-        // Step 5: Build the heightmap from all non-ground points
-        let heightData = computeHeightmap(
-            points: pointCloud,
-            groundPlane: plane,
-            bounds: boundary
-        )
+
+        let heightData = computeHeightmap(points: pointCloud, groundPlane: plane, bounds: boundary)
+        heightmap = heightData
         print("  ✓ Heightmap: \(heightData.count) samples")
-        
-        return GardenMap(
+
+        let map = GardenMap(
             boundary: boundary,
             heightmap: heightData,
             groundPlane: plane,
             scanDuration: scanDuration
         )
+        processedMap = map
+        return map
     }
-    
+
     // MARK: - Private helpers
-    
+
     private func checkCapabilities() async {
         await MainActor.run {
-            let config = ARWorldTrackingConfiguration()
-            self.hasLiDAR = ARWorldTrackingConfiguration.supportedScenes.contains(.depthWith9DOF)
-            self.isDepthAvailable = ARWorldTrackingConfiguration.supportedScenes.contains(.deviceDepth) ||
-                                    ARWorldTrackingConfiguration.supportedScenes.contains(.depthWith9DOF)
+            self.isDepthAvailable = ARWorldTrackingConfiguration.supportsFrameSemantics([.sceneDepth])
+            self.hasLiDAR = ARWorldTrackingConfiguration.isSupported && self.isDepthAvailable
         }
     }
-    
-    private func extractGroundAndBuildMap(scene: ARReferenceScene) async {
-        do {
-            // Extract point clouds from all frames
-            let allPoints = scene.pointClouds.flatMap { frame in
-                frame.points.map { SIMD3<Float(Float($0.x), Float($0.y), Float($0.z)) }
-            }
-            
-            await MainActor.run {
-                self.pointCloud = allPoints
-            }
-            
-            // Extract meshes (triangulated surface)
-            let allTriangles = scene.meshes.flatMap { mesh in
-                mesh.indices.map { i0, i1, i2 in
-                    SIMD3<Int(Int(i0), Int(i1), Int(i2)) }
-                }
-            }
-            
-            await MainActor.run {
-                self.meshTriangles = allTriangles
-            }
-            
-            // If we have point cloud data, process it now
-            if !allPoints.isEmpty {
-                _ = try? await processToMap()
-            }
-            
-        } catch {
-            await MainActor.run {
-                self.status = .error(message: "Processing error: \(error.localizedDescription)")
-            }
-        }
+
+    private static func timestamp() -> String {
+        let f = DateFormatter()
+        f.dateFormat = "HH:mm:ss"
+        return f.string(from: Date())
     }
-    
-    /// RANSAC to find the ground plane (normal ≈ (0, 1, 0)).
+
+    private var scanDuration: TimeInterval {
+        guard let start = scanStartTime else { return 0 }
+        return Date().timeIntervalSince(start)
+    }
+
+    // MARK: - Ground plane (RANSAC)
+
+    /// Find the dominant ground plane (normal ≈ up) via RANSAC.
     private func extractGroundPlane(points: [SIMD3<Float>]) throws -> [SIMD3<Float>] {
-        let iterations = 50
-        let inlierThreshold: Float = 0.05 // 5cm tolerance
-        
+        guard points.count >= 3 else {
+            throw SpikeError.noGroundPlane
+        }
+
+        let iterations = 60
+        let inlierThreshold: Float = 0.05 // 5 cm tolerance
+        let up = simd_float3(0, 1, 0)
+
         var bestInliers: [SIMD3<Float>] = []
         var bestScore = 0
-        
+
         for _ in 0..<iterations {
-            // Random sample: 3 points to define a plane
-            guard points.count >= 3 else {
-                break
-            }
-            
-            let s1 = points.randomElement()!
-            let s2 = points.randomElement()!
-            let s3 = points.randomElement()!
-            
-            // Compute plane normal
+            guard let s1 = points.randomElement(),
+                  let s2 = points.randomElement(),
+                  let s3 = points.randomElement() else { break }
+
             let e1 = s2 - s1
             let e2 = s3 - s1
-            let normal = normalize(cross(e1, e2))
-            
-            // Ground plane should have normal pointing up (positive Y)
-            // Flip if needed
-            var finalNormal = normal
-            if finalNormal.y < 0 {
-                finalNormal = -normal
-            }
-            
-            // Weight towards (0, 1, 0) — prefer horizontal planes
-            let groundBias = simd_float3(0, 1, 0)
-            let alignment = dot(normalize(finalNormal), groundBias)
-            
-            // Count inliers
+            let n = simd_length(simd_cross(e1, e2))
+            guard n > 0.001 else { continue }
+            let normal = simd_cross(e1, e2) / n
+
+            // Prefer upward-facing planes (ground, not ceiling).
+            let biased = normal.y < 0 ? -normal : normal
+            let alignment = simd_dot(biased, up)
+
             var inliers: [SIMD3<Float>] = []
             for p in points {
-                let dist = abs(dot(p, finalNormal) + dot(-p, finalNormal))
-                // Distance from point to plane
-                let d = abs(dot(finalNormal, p) - dot(finalNormal, s1))
-                
-                if d < inlierThreshold {
-                    inliers.append(p)
-                }
+                let d = abs(simd_dot(biased, p - s1))
+                if d < inlierThreshold { inliers.append(p) }
             }
-            
-            // Score: inliers * alignment with upward normal
-            let score = Double(inliers.count) * Double(alignment)
-            if score > Double(bestScore) * Double(alignment) || bestInliers.isEmpty {
-                if inliers.count > bestScore {
-                    bestInliers = inliers
-                    bestScore = inliers.count
-                }
+
+            let score = inliers.count
+            if score > bestScore && alignment > 0.5 {
+                bestInliers = inliers
+                bestScore = score
             }
         }
-        
-        // If we got a decent ground plane, return it
-        guard bestScore > points.count * 0.1 else {
-            // Couldn't find a ground plane — return all points as "potential ground"
-            print("⚠ Could not find clear ground plane, returning all points")
-            return points
+
+        // If we couldn't find a confident ground plane, fall back to the lowest points.
+        guard bestScore > points.count / 10 else {
+            print("⚠ No confident ground plane; using lowest 20% of points")
+            let sorted = points.sorted { $0.y < $1.y }
+            return Array(sorted.prefix(max(1, points.count / 5)))
         }
-        
+
         return bestInliers
     }
-    
-    /// Fit a gravity-aligned ground plane from inlier points.
+
+    /// Fit a gravity-aligned plane (normal = up) through the point centroid.
     private func fitGroundPlane(points: [SIMD3<Float>]) -> Plane {
-        // Simple: use the median of heights to define the ground plane
-        let medians = points.reduce(SIMD3<Float>(0)) { acc, p in
-            acc + p
-        } / Float(points.count)
-        
-        // Ground plane: passes through centroid, normal is (0, 1, 0)
+        guard !points.isEmpty else {
+            return Plane(normal: simd_float3(0, 1, 0), distance: 0)
+        }
+        let centroid = points.reduce(SIMD3<Float>(repeating: 0)) { $0 + $1 } / Float(points.count)
         let normal = simd_float3(0, 1, 0)
-        let distance = -dot(normal, medians)
-        
+        let distance = -simd_dot(normal, centroid)
         return Plane(normal: normal, distance: distance)
     }
-    
-    /// Project 3D points onto the 2D ground plane (top-down, XZ → XY).
+
+    // MARK: - 2D projection
+
+    /// Project 3D points onto the ground plane (top-down). Returns [x, z] pairs.
     private func projectTo2D(points: [SIMD3<Float>], groundPlane: Plane) -> [[Double]] {
         let normal = groundPlane.normal
-        let offset = groundPlane.distance
-        
-        // Create a basis for the ground plane
-        // We want: X axis → forward/in garden, Y axis → right/side
-        let arbitrary = simd_float3(1, 0, 0)
-        var right = normalize(cross(normal, arbitrary))
-        // If normal was too close to (1, 0, 0), use (0, 0, 1)
-        if abs(dot(normal, simd_float3(1, 0, 0))) > 0.9 {
-            right = normalize(cross(normal, simd_float3(0, 0, 1)))
+        var right = simd_normalize(simd_cross(normal, simd_float3(1, 0, 0)))
+        if simd_length(right) < 0.5 {
+            right = simd_normalize(simd_cross(normal, simd_float3(0, 0, 1)))
         }
-        let forward = cross(right, normal)
-        
+        let forward = simd_cross(right, normal)
+
         var projected: [[Double]] = []
+        projected.reserveCapacity(points.count)
         for p in points {
-            // Project onto the plane
-            let projected3D = p + (-(dot(normal, p) + offset) * normal)
-            
-            // 2D coordinates relative to plane origin
-            let x = Double(dot(right, projected3D))
-            let z = Double(dot(forward, projected3D))
-            
+            // Project the point down onto the plane first.
+            let proj = p + (-(simd_dot(normal, p) + groundPlane.distance) * normal)
+            let x = Double(simd_dot(right, proj))
+            let z = Double(simd_dot(forward, proj))
             projected.append([x, z])
         }
-        
         return projected
     }
-    
-    /// Compute the convex hull / boundary polygon of 2D points.
+
+    // MARK: - Boundary (convex hull, Graham scan)
+
     private func computeBoundary(points2D: [[Double]]) -> [[Double]] {
-        guard points2D.count >= 3 else {
-            return points2D
-        }
-        
-        // Graham scan convex hull (simple, O(n log n))
-        let origin = points2D.min(by: { p1, p2 in
+        guard points2D.count >= 3 else { return points2D }
+
+        let origin = points2D.min { p1, p2 in
             p1[1] < p2[1] || (p1[1] == p2[1] && p1[0] < p2[0])
-        })!
-        
+        }!
+
         let sorted = points2D.sorted { p1, p2 in
             let a1 = atan2(p1[1] - origin[1], p1[0] - origin[0])
             let a2 = atan2(p2[1] - origin[1], p2[0] - origin[0])
             return a1 < a2
         }
-        
-        var hull: [[Double]] = [origin]
+
+        var hull: [[Double]] = []
         for p in sorted {
             while hull.count > 1 {
                 let a = hull[hull.count - 2]
                 let b = hull[hull.count - 1]
                 let cross = (b[0] - a[0]) * (p[1] - b[1]) - (b[1] - a[1]) * (p[0] - b[0])
-                if cross <= 0 {
-                    hull.removeLast()
-                } else {
-                    break
-                }
+                if cross <= 0 { hull.removeLast() } else { break }
             }
             hull.append(p)
         }
-        
         return hull
     }
-    
-    /// Compute a heightmap (grid of elevation values) from 3D points.
+
+    // MARK: - Heightmap
+
     private func computeHeightmap(points: [SIMD3<Float>], groundPlane: Plane, bounds: [[Double]]) -> [Float] {
-        guard !bounds.isEmpty else {
-            return []
-        }
-        
-        // Find bounding box
-        var minX: Double = .infinity
-        var maxX: Double = -.infinity
-        var minZ: Double = .infinity
-        var maxZ: Double = -.infinity
-        
+        guard !bounds.isEmpty else { return [] }
+
+        var minX: Double = .infinity, maxX: Double = -.infinity
+        var minZ: Double = .infinity, maxZ: Double = -.infinity
         for p in bounds {
-            minX = min(minX, p[0])
-            maxX = max(maxX, p[0])
-            minZ = min(minZ, p[1])
-            maxZ = max(maxZ, p[1])
+            minX = min(minX, p[0]); maxX = max(maxX, p[0])
+            minZ = min(minZ, p[1]); maxZ = max(maxZ, p[1])
         }
-        
-        let gridSize = 64 // resolution for the heightmap
+        guard maxX > minX, maxZ > minZ else { return [] }
+
+        let gridSize = 64
         let dx = (maxX - minX) / Double(gridSize - 1)
         let dz = (maxZ - minZ) / Double(gridSize - 1)
-        
-        var heightmap: [Float] = []
-        
-        for y in 0..<gridSize {
-            for x in 0..<gridSize {
-                let targetX = minX + Double(x) * dx
-                let targetZ = minZ + Double(y) * dz
-                
-                // Find all 3D points near this grid cell
-                var heights: [Float] = []
-                for p in points {
-                    let projX = dot(simd_float3(1, 0, 0), simd_float3(Float(p.x), Float(p.y), Float(p.z)))
-                    // Simple projection onto the ground plane for height estimation
-                    let distanceToPlane = abs(dot(groundPlane.normal, p) + groundPlane.distance)
-                    heights.append(distanceToPlane)
-                }
-                
-                let height = heights.isEmpty ? 0 : heights.min() ?? 0
-                heightmap.append(height)
+
+        // Bucket points into grid cells, tracking the max height above the plane.
+        var cells = Array(repeating: 0.0, count: gridSize * gridSize)
+        for p in points {
+            let h = Double(simd_dot(groundPlane.normal, p) + groundPlane.distance)
+            guard h > 0 else { continue }
+            let gx = Int((Double(p.x) - minX) / dx)
+            let gz = Int((Double(p.y) - minZ) / dz)
+            guard (0..<gridSize).contains(gx), (0..<gridSize).contains(gz) else { continue }
+            let idx = gz * gridSize + gx
+            cells[idx] = max(cells[idx], h)
+        }
+
+        return cells.map { Float($0) }
+    }
+}
+
+// MARK: - ARSessionDelegate: accumulate a point cloud from the scene-depth buffer
+
+extension LiDARScanner: ARSessionDelegate {
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        guard isCapturing,
+              let depth = frame.sceneDepth else { return }
+
+        accumulatePoints(from: depth.depthMap, camera: frame.camera)
+    }
+
+    /// Convert a scene-depth CVPixelBuffer (Float32 meters) into world-space points.
+    private func accumulatePoints(from depthMap: CVPixelBuffer, camera: ARCamera) {
+        let width = CVPixelBufferGetWidth(depthMap)
+        let height = CVPixelBufferGetHeight(depthMap)
+        guard let base = CVPixelBufferGetBaseAddress(depthMap) else { return }
+        let rowBytes = CVPixelBufferGetBytesPerRow(depthMap)
+        guard width > 0, height > 0, rowBytes >= width * 4 else { return }
+
+        let basePtr = base.assumingMemoryBound(to: Float.self)
+        let projection = camera.projectionMatrix
+        let inverseProjection = projection.inverse
+        let cameraTransform = camera.transform
+
+        var new: [SIMD3<Float>] = []
+        new.reserveCapacity(256)
+
+        let strideY = max(1, height / 32)
+        let strideX = max(1, width / 32)
+
+        for y in Swift.stride(from: 0, to: height, by: strideY) {
+            for x in Swift.stride(from: 0, to: width, by: strideX) {
+                let z = basePtr[y * (rowBytes / 4) + x]
+                guard z.isFinite, z > 0.03, z < 25 else { continue }
+
+                // Normalized device coordinates (buffer origin is top-left,
+                // projection matrix origin is bottom-left).
+                let ndcX = (2 * Float(x) / Float(width)) - 1
+                let ndcY = 1 - (2 * Float(y) / Float(height))
+                let clip = SIMD4<Float>(ndcX, ndcY, -1, 1)
+
+                // Unproject to a ray direction in camera space.
+                let dirCam = inverseProjection * clip
+                let dirCam3 = SIMD3<Float>(dirCam.x, dirCam.y, dirCam.z)
+                let len = simd_length(dirCam3)
+                guard len > 0.0001 else { continue }
+                let dirCamNorm = dirCam3 / len
+
+                // Transform the ray into the world and advance it by the measured depth.
+                let worldRay4 = cameraTransform * SIMD4<Float>(dirCamNorm.x, dirCamNorm.y, dirCamNorm.z, 0)
+                let worldRay3 = SIMD3<Float>(worldRay4.x, worldRay4.y, worldRay4.z)
+                let worldLen = simd_length(worldRay3)
+                guard worldLen > 0.0001 else { continue }
+                let dirWorld = worldRay3 / worldLen
+                let origin = cameraTransform.columns.3
+                let origin3 = SIMD3<Float>(origin.x, origin.y, origin.z)
+                new.append(origin3 + dirWorld * z)
             }
         }
-        
-        return heightmap
-    }
-    
-    private var scanDuration: TimeInterval {
-        guard let start = scanStartTime else { return 0 }
-        return Date().timeIntervalSince(start)
+
+        guard !new.isEmpty else { return }
+
+        Task { @MainActor in
+            if self.pointCloud.count < self.maxPoints {
+                self.pointCloud.append(contentsOf: new)
+            }
+            self.progress = min(1.0, Double(self.pointCloud.count) / Double(self.maxPoints))
+        }
     }
 }
 
 // MARK: - Supporting types
 
-enum ScannerStatus {
+enum ScannerStatus: Equatable {
     case idle
     case capturing
     case processing
@@ -429,31 +374,20 @@ struct GardenMap {
     let heightmap: [Float]   // grid of heights (row-major)
     let groundPlane: Plane
     let scanDuration: TimeInterval
-    
+
     var bounds: (minX: Double, maxX: Double, minZ: Double, maxZ: Double) {
-        guard !boundary.isEmpty else {
-            return (0, 0, 0, 0)
-        }
-        
-        var minX: Double = .infinity
-        var maxX: Double = -.infinity
-        var minZ: Double = .infinity
-        var maxZ: Double = -.infinity
-        
+        guard !boundary.isEmpty else { return (0, 0, 0, 0) }
+        var minX: Double = .infinity, maxX: Double = -.infinity
+        var minZ: Double = .infinity, maxZ: Double = -.infinity
         for p in boundary {
-            minX = min(minX, p[0])
-            maxX = max(maxX, p[0])
-            minZ = min(minZ, p[1])
-            maxZ = max(maxZ, p[1])
+            minX = min(minX, p[0]); maxX = max(maxX, p[0])
+            minZ = min(minZ, p[1]); maxZ = max(maxZ, p[1])
         }
-        
         return (minX, maxX, minZ, maxZ)
     }
-    
+
     var approximateArea: Double {
-        // Shoelace formula
         guard boundary.count >= 3 else { return 0 }
-        
         var sum = 0.0
         for i in 0..<boundary.count {
             let j = (i + 1) % boundary.count
@@ -468,10 +402,4 @@ enum SpikeError: Error {
     case noPointCloud
     case noGroundPlane
     case noBoundary
-}
-
-private let ShortDateFormatter: (Date, formatter: Any) -> String = {
-    let f = DateFormatter()
-    f.dateFormat = "HH:mm:ss"
-    return f.string(from: $0)
 }

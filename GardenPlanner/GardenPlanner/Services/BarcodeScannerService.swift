@@ -2,6 +2,13 @@ import Foundation
 import AVFoundation
 import SwiftUI
 
+/// AVCaptureSession is documented thread-safe for start/stop but is not marked
+/// Sendable. This box lets the capture queue hold a reference without warnings.
+private final class SessionBox: @unchecked Sendable {
+    let session: AVCaptureSession
+    init(_ session: AVCaptureSession) { self.session = session }
+}
+
 /// Camera-based 1D barcode scanner for seed packets (EAN, UPC, Code 128/39).
 @MainActor
 class BarcodeScannerService: NSObject, ObservableObject {
@@ -40,9 +47,12 @@ class BarcodeScannerService: NSObject, ObservableObject {
 
             session.commitConfiguration()
 
+            // startRunning must happen off the main thread; hand the session to
+            // the capture queue through a Sendable box.
+            let box = SessionBox(session)
             DispatchQueue.global(qos: .userInitiated).async {
-                if !self.session.isRunning {
-                    self.session.startRunning()
+                if !box.session.isRunning {
+                    box.session.startRunning()
                 }
             }
             isScanning = true
@@ -52,8 +62,11 @@ class BarcodeScannerService: NSObject, ObservableObject {
     }
 
     func stopSession() {
-        if session.isRunning {
-            session.stopRunning()
+        let box = SessionBox(session)
+        DispatchQueue.global(qos: .userInitiated).async {
+            if box.session.isRunning {
+                box.session.stopRunning()
+            }
         }
         isScanning = false
     }

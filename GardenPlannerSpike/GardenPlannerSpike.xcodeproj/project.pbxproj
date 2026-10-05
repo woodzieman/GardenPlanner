@@ -7,28 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A100001 /* GardenPlannerSpike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200001; };
-		1A100002 /* LiDARScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200002; };
-		1A100003 /* PointCloudProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200003; };
-		1A100004 /* Geometry2DProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200004; };
-		1A100005 /* ScanCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200005; };
-		1A100006 /* ScanMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A200006; };
-		1A100007 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A200007; };
+		6a50c5d914ffe79e97e02d35 /* GardenPlannerSpike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66cf7f2aa66e87203eb485b8; };
+		fd0854b468204221e3eef83e /* LiDARScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ca0ebf6d706a196eed33ea4; };
+		6dbaf4a07d0fde96eca3970f /* PointCloudProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ea49de1cf0d95a420d78af0d; };
+		c0d6b2e737d964e85ae67e5f /* Geometry2DProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8d0f96f522bbd181630dfb8d; };
+		ef90bf43523d7c430de8702c /* ScanCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698b343290917867ecc855f6; };
+		e63af94edf6f86d467fa3dc9 /* ScanMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ba0b31d7641c68da9203419; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1A200001 /* GardenPlannerSpike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenPlannerSpike.swift; sourceTree = "\"<group>\""; };
-		1A200002 /* LiDARScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiDARScanner.swift; sourceTree = "\"<group>\""; };
-		1A200003 /* PointCloudProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudProcessor.swift; sourceTree = "\"<group>\""; };
-		1A200004 /* Geometry2DProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry2DProjection.swift; sourceTree = "\"<group>\""; };
-		1A200005 /* ScanCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCaptureView.swift; sourceTree = "\"<group>\""; };
-		1A200006 /* ScanMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMapView.swift; sourceTree = "\"<group>\""; };
-		1A200007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "\"<group>\""; };
-		1A200008 /* GardenPlannerSpike.app */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o"; includeInIndex = 0; path = GardenPlannerSpike.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		66cf7f2aa66e87203eb485b8 /* GardenPlannerSpike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenPlannerSpike.swift; sourceTree = "<group>"; };
+		1ca0ebf6d706a196eed33ea4 /* LiDARScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiDARScanner.swift; sourceTree = "<group>"; };
+		ea49de1cf0d95a420d78af0d /* PointCloudProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudProcessor.swift; sourceTree = "<group>"; };
+		8d0f96f522bbd181630dfb8d /* Geometry2DProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry2DProjection.swift; sourceTree = "<group>"; };
+		698b343290917867ecc855f6 /* ScanCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCaptureView.swift; sourceTree = "<group>"; };
+		1ba0b31d7641c68da9203419 /* ScanMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMapView.swift; sourceTree = "<group>"; };
+		9ce72a56612f6d1e2e61bc03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		a7332f3238c8d9d408493890 /* GardenPlannerSpike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GardenPlannerSpike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1A300001 /* Frameworks */ = {
+		25837cc93389c64466ed86d5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -38,64 +37,80 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A400001 = {
+		c670c59a99435142bd05761d = {
 			isa = PBXGroup;
 			children = (
-				1A400002 /* GardenPlannerSpike */,
-				1A400003 /* Products */,
+				73b6c8694e54364b10cef448 /* GardenPlannerSpike */,
+				ef23b710a4e31a81c3127b18 /* Products */,
 			);
-			root = 1;
-			sourceTree = "\"<group>\"";
+			sourceTree = "<group>";
 		};
-		1A400002 /* GardenPlannerSpike */ = {
+		73b6c8694e54364b10cef448 /* GardenPlannerSpike */ = {
 			isa = PBXGroup;
 			children = (
-				1A200001 /* GardenPlannerSpike.swift */,
-				1A200002 /* LiDARScanner.swift */,
-				1A200003 /* PointCloudProcessor.swift */,
-				1A200004 /* Geometry2DProjection.swift */,
-				1A200005 /* ScanCaptureView.swift */,
-				1A200006 /* ScanMapView.swift */,
-				1A200007 /* Info.plist */,
+				66cf7f2aa66e87203eb485b8 /* GardenPlannerSpike.swift */,
+				a3c00001a3c00001a3c00001 /* Scanning */,
+				b4d00001b4d00001b4d00001 /* Views */,
+				9ce72a56612f6d1e2e61bc03 /* Info.plist */,
 			);
 			path = GardenPlannerSpike;
-			sourceTree = "\"<group>\"";
+			sourceTree = "<group>";
 		};
-		1A400003 /* Products */ = {
+		a3c00001a3c00001a3c00001 /* Scanning */ = {
 			isa = PBXGroup;
 			children = (
-				1A200008 /* GardenPlannerSpike.app */,
+				1ca0ebf6d706a196eed33ea4 /* LiDARScanner.swift */,
+				ea49de1cf0d95a420d78af0d /* PointCloudProcessor.swift */,
+				8d0f96f522bbd181630dfb8d /* Geometry2DProjection.swift */,
+			);
+			path = Scanning;
+			sourceTree = "<group>";
+		};
+		b4d00001b4d00001b4d00001 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				698b343290917867ecc855f6 /* ScanCaptureView.swift */,
+				1ba0b31d7641c68da9203419 /* ScanMapView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		ef23b710a4e31a81c3127b18 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				a7332f3238c8d9d408493890 /* GardenPlannerSpike.app */,
 			);
 			name = Products;
-			sourceTree = "\"<group>\"";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1A500001 /* GardenPlannerSpike */ = {
+		696a7b353813c3ca71f6cf47 /* GardenPlannerSpike */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A700001 /* Build configuration list for target */;
+			name = GardenPlannerSpike;
+			buildConfigurationList = ef671eaaf2b4d03b6cf75497 /* Build configuration list for target */;
 			buildPhases = (
-				1A600001 /* Sources */,
-				1A600002 /* Frameworks */,
-				1A600003 /* Resources */,
+				c2a4c71354ee5b36c7ec7c2e /* Sources */,
+				bcc7c824e1d9a4fa1a1fd67e /* Frameworks */,
+				c5a6750ef62afcd2619551d5 /* Resources */,
 			);
 			buildRules = (
 			);
 			productName = GardenPlannerSpike;
-			productReference = 1A200008 /* GardenPlannerSpike.app */;
+			productReference = a7332f3238c8d9d408493890 /* GardenPlannerSpike.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1A800001 /* Project object */ = {
+		0d11d0d733991eadfc2a2ae8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				PrefixHeaderLocation = shared;
 			};
-			buildConfigurationList = 1A800002 /* Build configuration list for project */;
+			buildConfigurationList = a884733ec21c8450375acc3d /* Build configuration list for project */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -103,43 +118,42 @@
 				en,
 				Base,
 			);
-			mainGroup = 1A400001;
-			productRefGroup = 1A400003 /* Products */;
+			mainGroup = c670c59a99435142bd05761d;
+			productRefGroup = ef23b710a4e31a81c3127b18 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1A500001 /* GardenPlannerSpike */,
+				696a7b353813c3ca71f6cf47 /* GardenPlannerSpike */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1A600003 /* Resources */ = {
+		c5a6750ef62afcd2619551d5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A100007 /* Info.plist in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1A600001 /* Sources */ = {
+		c2a4c71354ee5b36c7ec7c2e /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A100001 /* GardenPlannerSpike.swift in Sources */,
-				1A100002 /* LiDARScanner.swift in Sources */,
-				1A100003 /* PointCloudProcessor.swift in Sources */,
-				1A100004 /* Geometry2DProjection.swift in Sources */,
-				1A100005 /* ScanCaptureView.swift in Sources */,
-				1A100006 /* ScanMapView.swift in Sources */,
+				6a50c5d914ffe79e97e02d35 /* GardenPlannerSpike.swift in Sources */,
+				fd0854b468204221e3eef83e /* LiDARScanner.swift in Sources */,
+				6dbaf4a07d0fde96eca3970f /* PointCloudProcessor.swift in Sources */,
+				c0d6b2e737d964e85ae67e5f /* Geometry2DProjection.swift in Sources */,
+				ef90bf43523d7c430de8702c /* ScanCaptureView.swift in Sources */,
+				e63af94edf6f86d467fa3dc9 /* ScanMapView.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1A900001 /* Debug */ = {
+		73d614ddc62aa52110a970b8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -171,7 +185,7 @@
 			};
 			name = Debug;
 		};
-		1A900002 /* Release */ = {
+		0a6ace02845222c9bb1e0d13 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -195,19 +209,14 @@
 			};
 			name = Release;
 		};
-		1A900003 /* Debug */ = {
+		265b420f029decd21950140d /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "VDWDUNC9R2";
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GardenPlannerSpike/Info.plist;
-				INFOPLIST_KEY_CFBundleName = "GardenPlannerSpike";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -221,19 +230,14 @@
 			};
 			name = Debug;
 		};
-		1A900004 /* Release */ = {
+		9737b62df2eb182284705af9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "VDWDUNC9R2";
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GardenPlannerSpike/Info.plist;
-				INFOPLIST_KEY_CFBundleName = "GardenPlannerSpike";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -250,20 +254,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A700001 /* Build configuration list for target */ = {
+		ef671eaaf2b4d03b6cf75497 /* Build configuration list for target */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A900003 /* Debug */,
-				1A900004 /* Release */,
+				265b420f029decd21950140d /* Debug */,
+				9737b62df2eb182284705af9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 1;
 			defaultConfigurationName = Release;
 		};
-		1A800002 /* Build configuration list for project */ = {
+		a884733ec21c8450375acc3d /* Build configuration list for project */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A900001 /* Debug */,
-				1A900002 /* Release */,
+				73d614ddc62aa52110a970b8 /* Debug */,
+				0a6ace02845222c9bb1e0d13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 1;
 			defaultConfigurationName = Release;
@@ -273,70 +277,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 /* End XCRemoteSwiftPackageReference section */
 
-/* XCKCRProjectArchivingOptions */
-/* Begin XCKEConsoleOutputFilterSet section */
-/* End XCKEConsoleOutputFilterSet section */
-/* Begin XCScheme section */
-		1B100001 /* GardenPlannerSpike */ = {
-			isa = XCScheme;
-			LaunderScript = "";
-			RunScriptMBSFile = "";
-			BuildAction = {
-				BuildActionEntries = (
-					1B100002 /* <XCBuildActionEntry> */,
-				);
-			};
-			TestAction = {
-				Arguments = {
-				};
-				EnvironmentVariables = {
-				};
-				Testables = (
-				);
-			};
-			LaunchAction = {
-				BuildActionPreference = "automatic";
-				Options = {
-				};
-				SchemeCommandName = Application;
-				StartupBehavior = 0;
-				SimulationLocationAllowEmulatedLocation = 1;
-				SimulationLocationLatitude = 37.774929555100963;
-				SimulationLocationLongitude = -122.41940989882469;
-				SimulationLocationSimulationMode = "2";
-				SymbolFile = "";
-				TargetSignature = {
-				};
-				WorkingDirectory = {
-				};
-			};
-			ProfileAction = {
-				SchemeCommandName = Application;
-				TargetSignature = {
-				};
-			};
-			AnalyzeAction = {
-				SchemeCommandName = Application;
-				TargetSignature = {
-				};
-			};
-			ArchiveAction = {
-				ExportOptions = {
-				};
-				ExportPath = "";
-				SchemeCommandName = Application;
-				TargetSignature = {
-				};
-			};
-			objectID = "1B100001";
-			targetReference = "1A500001";
-		};
-		1B100002 /* <XCBuildActionEntry> */ = {
-			BuildActionAttachment = 0;
-			ShouldLaunch = 1;
-			targetReference = "1A500001";
-		};
-/* End XCScheme section */
+
 	};
-	rootObject = 1A800001 /* Project object */;
+	rootObject = 0d11d0d733991eadfc2a2ae8 /* Project object */;
 }

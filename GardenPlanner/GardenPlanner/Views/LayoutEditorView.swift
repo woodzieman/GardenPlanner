@@ -125,23 +125,17 @@ struct LayoutEditorView: View {
             
             Spacer()
             
-            if !isValid(variety: nil, in: zone) {
-                // Show warning if any plant in this zone has issues
-                let warnings = garden.plantInstances.filter { $0.zone?.id == zone.id && $0.isWarning }.count
-                if warnings > 0 {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
-                }
+            // Show a warning badge if any plant in this zone has light/wetness issues.
+            let warnings = garden.plantInstances.filter { $0.zone?.id == zone.id && $0.isWarning }.count
+            if warnings > 0 {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.orange)
             }
             
             Text("\(String(format: "%.1f", zone.area))m²")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
-    }
-    
-    private func isValid(variety: Variety?, in zone: SurfaceZone) -> Bool {
-        true  // simplified for MVP
     }
     
     private func zoneTypeIcon(_ type: SurfaceZoneType) -> String {

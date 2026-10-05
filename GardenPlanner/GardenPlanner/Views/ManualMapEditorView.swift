@@ -2,8 +2,8 @@ import SwiftUI
 import SwiftData
 
 /// Manual map editor — for non-LiDAR devices (or when user prefers).
-/// Tools: rect, curve, freehand drawing with real-world dimensions.
-/// Users trace or draw their garden layout directly.
+/// Tools: rectangle, polygon, freehand drawing.
+/// A width slider maps the drawn map to real-world meters, so areas are honest.
 
 struct ManualMapEditorView: View {
     let garden: Garden
@@ -15,6 +15,8 @@ struct ManualMapEditorView: View {
     @State private var drawingMode: DrawingMode = .freehand
     @State private var isDrawing = false
     @State private var canvasSize: CGSize = .zero
+    /// Real-world width of the map (the canvas width maps to this many meters).
+    @State private var mapWidthMeters: Double = 10
     
     enum DrawingMode: CaseIterable {
         case rectangle
@@ -35,7 +37,16 @@ struct ManualMapEditorView: View {
                 .frame(minHeight: 300)
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
-                .padding()
+                .padding(.horizontal)
+                
+                // Scale control
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Map width: \(String(format: "%.0f", mapWidthMeters)) m")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Slider(value: $mapWidthMeters, in: 3...30, step: 1)
+                }
+                .padding(.horizontal)
                 
                 // Drawing tools
                 toolBar
@@ -48,10 +59,15 @@ struct ManualMapEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { saveZone() }
-                        .disabled(points.count < 3)
+                        .disabled(!canSave)
                 }
             }
         }
+    }
+    
+    private var canSave: Bool {
+        // Rectangle needs one corner tap; polygon/freehand need a closed shape.
+        drawingMode == .rectangle ? points.count >= 1 : points.count >= 3
     }
     
     private var toolBar: some View {
@@ -85,10 +101,29 @@ struct ManualMapEditorView: View {
     private func saveZone() {
         guard !points.isEmpty else { return }
         
+        // Convert canvas pixels to meters using the chosen map width.
+        let width = canvasSize.width > 0 ? canvasSize.width : 300
+        let scale = mapWidthMeters / Double(width)
+        let scaled = points.map { [$0[0] * scale, $0[1] * scale] }
+        
+        let polygon: [[Double]]
+        if drawingMode == .rectangle, let corner = scaled.first {
+            // One tap = top-left corner; complete the rectangle to the canvas edges.
+            let h = canvasSize.height > 0 ? canvasSize.height * scale : mapWidthMeters
+            polygon = [
+                [corner[0], corner[1]],
+                [mapWidthMeters, corner[1]],
+                [mapWidthMeters, h],
+                [corner[0], h]
+            ]
+        } else {
+            polygon = scaled
+        }
+        
         let newZone = SurfaceZone(
             name: nil,
             surfaceType: .gardenBed,
-            polygonPoints: points,
+            polygonPoints: polygon,
             elevation: 0,
             lightLevel: 50,
             wetness: .moderate
@@ -124,32 +159,45 @@ struct DrawingCanvas: View {
                 }
             }
             .gesture(tapGesture(geometry))
+            // Freehand: drag to draw (much more natural than tap-tap-tap).
+            .gesture(mode == .freehand ? dragGesture(geometry) : nil)
         }
+    }
+    
+    private func canvasPoint(_ x: CGFloat, _ y: CGFloat, height: CGFloat) -> [Double] {
+        [Double(x), Double(height - y)]
     }
     
     private func tapGesture(_ geometry: GeometryProxy) -> some Gesture {
         SpatialTapGesture().onEnded { value in
             let location = value.location
-            let point = [Double(location.x), Double(geometry.size.height - location.y)]
+            let point = canvasPoint(location.x, location.y, height: geometry.size.height)
             
             switch mode {
             case .rectangle:
-                points = [point]  // Store first corner
+                points = [point]  // Store one corner; completed on save
                 isDrawing = true
             case .polygon:
                 points.append(point)
             case .freehand:
-                if !points.isEmpty {
-                    let last = points.last!
-                    let dx = Double(location.x) - last[0]
-                    let dy = Double(geometry.size.height - location.y) - last[1]
-                    if sqrt(dx*dx + dy*dy) > 5 {
-                        points.append(point)
-                    }
-                } else {
+                points.append(point)
+            }
+        }
+    }
+    
+    private func dragGesture(_ geometry: GeometryProxy) -> some Gesture {
+        DragGesture(minimumDistance: 0).onChanged { value in
+            let point = canvasPoint(value.location.x, value.location.y, height: geometry.size.height)
+            if let last = points.last {
+                let dx = point[0] - last[0]
+                let dy = point[1] - last[1]
+                if sqrt(dx*dx + dy*dy) > 5 {
                     points.append(point)
                 }
+            } else {
+                points.append(point)
             }
+            isDrawing = true
         }
     }
     

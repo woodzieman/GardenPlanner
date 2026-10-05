@@ -1,7 +1,7 @@
 # Handoff — Garden Planner App (Current State)
 
-**Date:** 2026-09-30  
-**Status:** ✅ Build green · Pushed to GitHub · Ready for TestFlight
+**Date:** 2026-10-04  
+**Status:** ✅ Main app + Spike both build green · Pushed to GitHub · Ready for TestFlight
 
 ---
 
@@ -24,9 +24,22 @@
 2. **Weather geocoding** is a small lookup table — add proper geocoding fallback
 3. **PlantDetailView** — show barcode (`variety.barcode`)
 4. **LayoutEditorView.isValid** is a placeholder — implement real light/moisture matching (GardenModel has a working `approximates`-based version to reuse)
-5. Phase 0 spike: run `GardenPlannerSpike/` on a LiDAR device, fill `SPIKE_GATE.md`
+5. **Spike project** is now fixed (see below) — run `GardenPlannerSpike/` on a LiDAR device, fill `SPIKE_GATE.md`
 
-## Critical environment gotchas (verified against the iOS 27 SDK — do not regress)
+### Spike project — now buildable (fixed in this session)
+
+The Spike project's obsolete ARKit API references (`supportedScenes`, `sceneReconstruction`, `hasIPhoneAir`, `SceneCapture`, `ARKitSession`) were replaced with iOS 27 API:
+- `GardenPlannerSpike.swift`: `checkLiDARCapability()` → uses `ARWorldTrackingConfiguration.isSupported` + `supportsFrameSemantics([.sceneDepth])`
+- `ScanCaptureView.swift` (CameraPreviewView): `sceneReconstruction = .mesh/.localMapped/.deviceDepth` → `frameSemantics = [.sceneDepth]`
+- `ScanMapView.swift` (iOS 27 Canvas API fixes):
+  - Canvas closure second param is `CGSize`, not `CGRect` — construct `CGRect` from `size`
+  - `Path(rect:)` → create `Path()` then `addRect(rect)`
+  - `addEllipse(at:width:height:)` → `addEllipse(in:)` with `CGRect`
+  - `.color()` is a Canvas property, not a function — use `.color(color)`
+  - All `Text` cases in `statusLabel` switch must have identical modifier chains (same font, no extra modifiers on one case)
+- Spike Scanning files (`LiDARScanner.swift`, `PointCloudProcessor.swift`, `Geometry2DProjection.swift`) were already correctly replaced by the previous agent
+
+## Critical iOS 27 API gotchas (verified against the iOS 27 SDK — do not regress)
 
 - **iOS 27 SDK removed old ARKit depth APIs**: `ARFrame.depthData`, `isLiDARDepthInformationEnabled`, `supportedScenes`, `unprojectPosition`. Use `frame.sceneDepth` (CVPixelBuffer) + `camera.projectionMatrix` (property). Never use the removed ones.
 - **Swift 6.4 SwiftData `@Model` macro rejects shorthand enum defaults** — write `= PlantStatus.planted`, not `= .planted`. Tuples are not persistable in `@Model`.

@@ -53,58 +53,24 @@ struct FrostDateService {
         return Calendar.current.date(byAdding: .day, value: daysOffset, to: baseDate)
     }
     
-    /// Calculate planting windows for a variety, given a garden's profile.
+    /// Build a planting window for a variety, given a garden's profile.
+    /// Custom frost date strings are honored; USDA-zone averages are the fallback.
+    /// (Actual sow/transplant/harvest dates are computed by the `PlantingWindow` extension.)
     static func plantingWindow(
         for variety: Variety,
         usdaZone: String,
         lastFrost: String? = nil,
-        firstFrost: String? = nil
-    ) -> [PlantingWindow] {
-        var windows: [PlantingWindow] = []
-        
-        // Get the frost dates (from profile or USDA approximation)
-        let calendar = Calendar.current
-        
-        // Try to parse custom frost dates first
-        let lastFrostParsed = parseFrostDate(lastFrost ?? "", calendar: calendar)
-        let firstFrostParsed = parseFrostDate(firstFrost ?? "", calendar: calendar)
-        
-        // Fallback to USDA zone approximation
-        let effectiveLastFrost = lastFrostParsed ?? lastSpringFrostDate(for: usdaZone) ?? calendar.date(from: DateComponents(year: springYear(), month: 4, day: 15))!
-        let effectiveFirstFrost = firstFrostParsed ?? firstFallFrostDate(for: usdaZone) ?? calendar.date(from: DateComponents(year: fallYear(), month: 10, day: 15))!
-        
-        // Direct seeding window (plant directly in ground)
-        let sowDate = calendar.date(byAdding: .day, value: -variety.sowOffset, to: effectiveLastFrost)!
-        let harvestDate = calendar.date(byAdding: .day, value: variety.daysToMature, to: sowDate)!
-        
-        windows.append(PlantingWindow(
+        firstFrost: String? = nil,
+        zoneType: SurfaceZoneType = .gardenBed
+    ) -> PlantingWindow {
+        PlantingWindow(
             variety: variety,
             usdaZone: usdaZone,
             lastFrostDate: lastFrost,
             firstFrostDate: firstFrost,
             lightLevel: 50,
-            zoneType: .gardenBed
-        ))
-        
-        // Succession planting (if harvest window allows multiple cycles)
-        let growingDays = Int(effectiveFirstFrost.timeIntervalSince(effectiveLastFrost))
-        let cycles = variety.daysToMature > 0 ? growingDays / variety.daysToMature : 1
-        
-        for cycle in 1..<cycles {
-            let cycleStart = calendar.date(byAdding: .day, value: cycle * (variety.daysToMature - variety.harvestWindow), to: effectiveLastFrost)!
-            let cycleSow = calendar.date(byAdding: .day, value: -variety.sowOffset, to: cycleStart)!
-            
-            windows.append(PlantingWindow(
-                variety: variety,
-                usdaZone: usdaZone,
-                lastFrostDate: lastFrost,
-                firstFrostDate: firstFrost,
-                lightLevel: 50,
-                zoneType: .gardenBed
-            ))
-        }
-        
-        return windows
+            zoneType: zoneType
+        )
     }
     
     /// Parse a frost date string (e.g. "Apr 15") into a Date.
@@ -141,24 +107,48 @@ struct FrostDateService {
 // MARK: - Calendar Computation (for PlantingCalendarView)
 
 extension PlantingWindow {
-    var sowDateString: String {
-        guard let lastFrost = FrostDateService.lastSpringFrostDate(for: usdaZone) else { return "—" }
-        let calendar = Calendar.current
+    private var calendar: Calendar { Calendar.current }
+
+    /// Effective last spring frost: the user's custom date (rolling forward
+    /// to next season if already past), else the USDA-zone approximation.
+    var lastFrost: Date? {
+        FrostDateService.parseFrostDate(lastFrostDate ?? "", calendar: calendar)
+            ?? FrostDateService.lastSpringFrostDate(for: usdaZone)
+    }
+
+    /// Effective first fall frost: the user's custom date, else the USDA-zone approximation.
+    var firstFrost: Date? {
+        FrostDateService.parseFrostDate(firstFrostDate ?? "", calendar: calendar)
+            ?? FrostDateService.firstFallFrostDate(for: usdaZone)
+    }
+
+    /// Sow date: `sowOffset` days before the last frost.
+    var sowDate: Date? {
+        guard let lastFrost = lastFrost else { return nil }
         return calendar.date(byAdding: .day, value: -variety.sowOffset, to: lastFrost)
-            .map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
     }
-    
-    var transplantDateString: String {
-        guard let lastFrost = FrostDateService.lastSpringFrostDate(for: usdaZone) else { return "—" }
-        let calendar = Calendar.current
+
+    /// Transplant date: `transplantOffset` days before the last frost (0 = at last frost).
+    var transplantDate: Date? {
+        guard let lastFrost = lastFrost else { return nil }
         return calendar.date(byAdding: .day, value: -variety.transplantOffset, to: lastFrost)
-            .map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
     }
-    
+
+    /// Harvest date: days-to-maturity after sowing.
+    var harvestDate: Date? {
+        guard let sowDate = sowDate else { return nil }
+        return calendar.date(byAdding: .day, value: variety.daysToMature, to: sowDate)
+    }
+
+    var sowDateString: String {
+        sowDate.map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
+    }
+
+    var transplantDateString: String {
+        transplantDate.map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
+    }
+
     var harvestDateString: String {
-        guard let lastFrost = FrostDateService.lastSpringFrostDate(for: usdaZone) else { return "—" }
-        let calendar = Calendar.current
-        return calendar.date(byAdding: .day, value: variety.daysToMature, to: lastFrost)
-            .map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
+        harvestDate.map { $0.formatted(date: .abbreviated, time: .omitted) } ?? "—"
     }
 }

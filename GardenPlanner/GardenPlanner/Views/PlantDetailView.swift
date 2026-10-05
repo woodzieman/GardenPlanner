@@ -9,9 +9,6 @@ struct PlantDetailView: View {
     @State private var showCompanions = false
     @State private var showAntagonists = false
     
-    private let companions: [Variety] = PlantDatabaseService.loadVarieties()
-    private let antagonists: [Variety] = PlantDatabaseService.loadVarieties()
-    
     var body: some View {
         List {
             // Header info
@@ -24,6 +21,17 @@ struct PlantDetailView: View {
                 detailRow("Mature Height", heightString)
                 detailRow("Mature Width", widthString)
                 detailRow("SFG per Square", "\(variety.sfgPerSquare)")
+                
+                if let barcode = variety.barcode {
+                    HStack {
+                        Text("Barcode")
+                        Spacer()
+                        Text(barcode)
+                            .font(.caption)
+                            .monospaced()
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
             
             // Environment
@@ -108,11 +116,13 @@ struct PlantDetailView: View {
     // MARK: - Computed
     
     private var companionCount: Int {
-        PlantDatabaseService.loadVarieties().filter { variety.companions.contains($0.name) }.count
+        let names = Set(variety.companions)
+        return PlantDatabaseService.loadVarieties().filter { names.contains($0.name) }.count
     }
     
     private var antagonistCount: Int {
-        PlantDatabaseService.loadVarieties().filter { variety.antagonists.contains($0.name) }.count
+        let names = Set(variety.antagonists)
+        return PlantDatabaseService.loadVarieties().filter { names.contains($0.name) }.count
     }
     
     private var spacingString: String {

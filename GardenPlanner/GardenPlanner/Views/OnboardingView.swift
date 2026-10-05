@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import ARKit
 
 /// Multi-step onboarding flow: location → USDA zone → frost dates → units → LiDAR check.
@@ -77,9 +78,9 @@ struct OnboardingView: View {
     
     private var frostDateStep: some View {
         Section("Frost Dates") {
-            TextField("Last spring frost (MM DD)", text: $lastFrostDate)
+            TextField("Last spring frost (e.g. Apr 15)", text: $lastFrostDate)
             
-            TextField("First fall frost (MM DD)", text: $firstFrostDate)
+            TextField("First fall frost (e.g. Oct 15)", text: $firstFrostDate)
             
             Text("Frost dates are used to calculate when to sow, transplant, and harvest. You can always change them later.")
                 .font(.caption)
@@ -122,15 +123,30 @@ struct OnboardingView: View {
     }
     
     private func completeOnboarding() {
-        // Create the default garden with profile
-        let garden = Garden(name: gardenName.isEmpty ? "My Garden" : gardenName)
-        garden.profile?.location = zipCode.isEmpty ? "Auto" : zipCode
-        garden.profile?.usdaZone = usdaZone
-        garden.profile?.lastFrostDate = lastFrostDate
-        garden.profile?.firstFrostDate = firstFrostDate
-        garden.profile?.units = units
+        // Reuse an existing garden if there is one (e.g. onboarding re-run after
+        // a data reset edge case); otherwise create the default garden.
+        let garden: Garden
+        if let existing = try? modelContext.fetch(FetchDescriptor<Garden>(
+            sortBy: [SortDescriptor(\Garden.createdDate)]
+        )).first {
+            garden = existing
+        } else {
+            garden = Garden(name: gardenName.isEmpty ? "My Garden" : gardenName)
+            modelContext.insert(garden)
+        }
         
-        modelContext.insert(garden)
+        guard let profile = garden.profile else { return }
+        profile.location = zipCode.isEmpty ? "Auto" : zipCode
+        profile.usdaZone = usdaZone
+        profile.lastFrostDate = lastFrostDate
+        profile.firstFrostDate = firstFrostDate
+        profile.units = units
+        #if os(iOS)
+        profile.hasLiDAR = ARWorldTrackingConfiguration.isSupported
+            && ARWorldTrackingConfiguration.supportsFrameSemantics([.sceneDepth])
+        #endif
+        
+        try? modelContext.save()
     }
     
     private func checkLiDARStatus() -> String {

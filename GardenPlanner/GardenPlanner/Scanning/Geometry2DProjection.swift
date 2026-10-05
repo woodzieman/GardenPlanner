@@ -33,11 +33,11 @@ func projectTo2D(
     let forward = cross(right, groundPlane.normal)
     
     // Translation: center the garden at origin
-    let centroid = points.reduce(SIMD3<Float>(0)) { $0 + $1 } / Float(points.count)
+    let centroid = points.reduce(SIMD3<Float>(repeating: 0)) { $0 + $1 } / Float(points.count)
     
     // 4x4 transform matrix: world → 2D
     // Columns: right, forward, up, origin
-    var transform = simd_float4x4(
+    let transform = simd_float4x4(
         simd_float4(right.x, right.y, right.z, 0),
         simd_float4(forward.x, forward.y, forward.z, 0),
         simd_float4(0, 0, 1, 0),

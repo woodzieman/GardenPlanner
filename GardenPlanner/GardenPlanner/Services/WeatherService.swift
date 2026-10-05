@@ -78,17 +78,17 @@ struct WeatherService {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         
-        return forecast.prefix(3).enumerated().compactMap { index, day in
-            let alertDate = calendar.date(byAdding: .day, value: index, to: today)!
-            let isFrostRisk = day.temperature < 4.0
-            
-            return FrostAlert(
-                isFrostRisk: isFrostRisk,
-                minTemperature: day.temperature,
-                alertDate: alertDate,
-                severity: day.temperature < 0 ? .warning : .watch
-            )
-        }
+        return forecast.prefix(3).enumerated()
+            .compactMap { index, day in
+                guard day.temperature < 4.0 else { return nil }  // only real frost-risk days
+                let alertDate = calendar.date(byAdding: .day, value: index, to: today)!
+                return FrostAlert(
+                    isFrostRisk: true,
+                    minTemperature: day.temperature,
+                    alertDate: alertDate,
+                    severity: day.temperature < 0 ? .warning : .watch
+                )
+            }
     }
     
     /// Get planting window alerts (when it's time to sow/transplant).

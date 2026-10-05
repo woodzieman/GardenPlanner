@@ -18,7 +18,7 @@ import ARKit
 func filterOutliers(points: [SIMD3<Float>], maxDistanceMeters: Float = 50.0) -> [SIMD3<Float>] {
     guard points.count >= 3 else { return points }
     
-    let center = points.reduce(SIMD3<Float>(0)) { $0 + $1 } / Float(points.count)
+    let center = points.reduce(SIMD3<Float>(repeating: 0)) { $0 + $1 } / Float(points.count)
     let maxDistSq = maxDistanceMeters * maxDistanceMeters
     
     return points.filter {
@@ -104,19 +104,12 @@ func classifySurface(points: [SIMD3<Float>], roi: Box3D) -> SurfaceType {
     let variance = heights.map { pow($0 - avgHeight, 2) }.reduce(0, +) / Float(heights.count)
     let stddev = sqrt(variance)
     
-    // Compute surface roughness (how "flat" is it?)
-    let avgNormal = roiPoints.reduce(SIMD3<Float>(0)) { acc, p in
-        acc + simd_float3(0, 1, 0)
-    } / Float(roiPoints.count)
-    
     // Heuristics:
     // - Low height variation + smooth → concrete/path
     // - Medium variation + textured → garden bed
     // - High variation + uneven → lawn/natural
     // - Very low (flat, no variation) → water
     // - Height above ground → raised bed / structure
-    
-    let groundY = avgHeight
     
     if stddev < 0.01 {
         return .water
@@ -154,7 +147,7 @@ func buildSurfaceMesh(points: [SIMD3<Float>], gridSize: Float = 0.05) -> (vertic
     // Compute average height per cell
     var gridHeights: [SIMD2<Int>: Float] = [:]
     for (key, cellPoints) in grid {
-        let avgY = cellPoints.reduce(SIMD3<Float>(0), +).y / Float(cellPoints.count)
+        let avgY = cellPoints.reduce(SIMD3<Float>(repeating: 0), +).y / Float(cellPoints.count)
         gridHeights[key] = avgY
     }
     
@@ -209,7 +202,6 @@ func decimateMesh(vertices: [SIMD3<Float>], triangles: [SIMD3<Int>], targetCount
     
     let xs = vertices.map { $0.x }
     let zs = vertices.map { $0.z }
-    let aspectRatio = (xs.max() ?? 1) / (zs.max() ?? 1)
     let width = (xs.max() ?? 0) - (xs.min() ?? 0)
     let depth = (zs.max() ?? 0) - (zs.min() ?? 0)
     let totalArea = width * depth

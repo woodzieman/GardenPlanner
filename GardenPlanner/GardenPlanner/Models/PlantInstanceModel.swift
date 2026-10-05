@@ -43,7 +43,8 @@ class PlantInstance: Identifiable {
     
     var daysUntilHarvest: Int? {
         guard let harvestDate = harvestDate else { return nil }
-        return max(0, Int(Date().timeIntervalSince(harvestDate).days))
+        // Positive interval = harvest is in the future.
+        return max(0, Int(harvestDate.timeIntervalSinceNow.days))
     }
     
     var isWarning: Bool {

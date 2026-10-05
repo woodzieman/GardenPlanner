@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Editor for a single surface zone.
 /// Allows adjusting: surface type, name, light level, wetness,

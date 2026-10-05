@@ -100,32 +100,16 @@ struct ContentView: View {
 // MARK: - LiDAR capability check (prints to console for the spike)
 private func checkLiDARCapability() {
     #if os(iOS)
-    let configuration = ARWorldTrackingConfiguration()
-    configuration.sceneReconstruction = .localMapped
+    // iOS 27: use supportsFrameSemantics instead of removed supportedScenes
+    let isSupported = ARWorldTrackingConfiguration.isSupported
+    let isDepthAvailable = ARWorldTrackingConfiguration.supportsFrameSemantics([.sceneDepth])
     
-    if ARWorldTrackingConfiguration.supportedScenes.contains(.depthWith9DOF) {
-        print("✅ LiDAR scanner detected — depth capture available")
-    } else if ARWorldTrackingConfiguration.supportedScenes.contains(.deviceDepth) {
-        print("⚠ No LiDAR, but device depth (stereo/tonel) available")
+    if isSupported && isDepthAvailable {
+        print("✅ Depth capture available (LiDAR or stereo)")
+    } else if isSupported {
+        print("⚠ ARKit supported but no depth data available")
     } else {
-        print("❌ No depth/LiDAR support on this device")
-    }
-    
-    // Check for iPhone Air (single camera, no LiDAR)
-    if UIDevice.current.hasIPhoneAir {
-        print("⚠ iPhone Air detected — single camera, no LiDAR")
-        print("   Fallback path (manual map editor) will be the core path")
+        print("❌ ARKit not supported on this device")
     }
     #endif
-}
-
-// MARK: - UIDevice extension for iPhone Air detection
-private extension UIDevice {
-    var hasIPhoneAir: Bool {
-        var sysinfo = utsname()
-        uname(&sysinfo)
-        let machine = String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)))
-            .trimmingCharacters(in: .controlCharacters)
-        return machine == "iPhone18,1" || machine == "iPhone18,2"
-    }
 }

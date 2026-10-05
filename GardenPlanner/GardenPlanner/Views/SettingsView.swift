@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import CloudKit
+import ARKit
 
 /// Settings view — profile management, garden management, sync, about.
 struct SettingsView: View {
@@ -15,6 +16,8 @@ struct SettingsView: View {
     @State private var gardenToDelete: Garden? = nil
     @State private var syncAvailable = false
     @State private var syncInProgress = false
+    @State private var syncMessage: String?
+    @State private var showingSyncResult = false
     
     var body: some View {
         NavigationStack {
@@ -145,7 +148,21 @@ struct SettingsView: View {
             .onAppear {
                 Task {
                     syncAvailable = await CloudKitSyncService().isAvailable()
+                    // Keep the stored LiDAR flag in sync with this device (it's a
+                    // device property, not a garden property).
+                    if let profile = gardens.first?.profile, profile.hasLiDAR != Self.isSceneDepthAvailable {
+                        profile.hasLiDAR = Self.isSceneDepthAvailable
+                        try? modelContext.save()
+                    }
                 }
+            }
+            .alert(
+                "Sync",
+                isPresented: $showingSyncResult
+            ) {
+                Button("OK") { syncMessage = nil }
+            } message: {
+                Text(syncMessage ?? "")
             }
             .sheet(isPresented: $showingEditProfile) {
                 EditProfileSheet()
@@ -173,24 +190,66 @@ struct SettingsView: View {
         
         do {
             let service = CloudKitSyncService()
-            _ = try await service.loadGardens()
-            print("✅ Sync successful")
+            try await service.setupAccount()
+            
+            // Push every local garden up.
+            let localGardens = try modelContext.fetch(FetchDescriptor<Garden>())
+            for garden in localGardens {
+                try await service.saveGarden(garden)
+            }
+            
+            // Import remote gardens that don't exist locally (by id).
+            let localIDs = Set(localGardens.map(\.id))
+            let remoteGardens = try await service.loadGardens()
+            let newCount = remoteGardens.filter { !localIDs.contains($0.id) }.count
+            for garden in remoteGardens where !localIDs.contains(garden.id) {
+                modelContext.insert(garden)
+            }
+            try modelContext.save()
+            
+            syncMessage = newCount > 0
+                ? "Synced \(localGardens.count) garden(s) and imported \(newCount) from iCloud."
+                : "Synced \(localGardens.count) garden(s) — everything is up to date."
+            showingSyncResult = true
         } catch {
-            print("❌ Sync failed: \(error.localizedDescription)")
+            syncMessage = error.localizedDescription
+            showingSyncResult = true
         }
     }
     
+    /// Live device check for scene-depth (LiDAR/stereo) capture support.
+    static var isSceneDepthAvailable: Bool {
+        #if os(iOS)
+        return ARWorldTrackingConfiguration.isSupported
+            && ARWorldTrackingConfiguration.supportsFrameSemantics([.sceneDepth])
+        #else
+        return false
+        #endif
+    }
+    
     private func deleteAllData() {
-        let descriptor = FetchDescriptor<Garden>()
-        if let garden = try? modelContext.fetch(descriptor).first {
-            modelContext.delete(garden)
-        }
+        // Gardens cascade to zones/plants/scans; the standalone record types
+        // (tasks, journal, harvests, seed scans) must be deleted explicitly.
+        deleteAll(Garden.self)
+        deleteAll(TaskItem.self)
+        deleteAll(JournalEntry.self)
+        deleteAll(HarvestRecord.self)
+        deleteAll(SeedRecord.self)
+        try? modelContext.save()
         
         // Reset onboarding flag so user re-enters onboarding
         hasCompletedOnboarding = false
         
         // Reset app storage
         UserDefaults.standard.removeObject(forKey: "selectedTab")
+    }
+    
+    /// Delete every instance of a model type.
+    private func deleteAll<M: PersistentModel>(_ type: M.Type) {
+        guard let all = try? modelContext.fetch(FetchDescriptor<M>()) else { return }
+        for item in all {
+            modelContext.delete(item)
+        }
     }
 }
 

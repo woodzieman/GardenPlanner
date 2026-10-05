@@ -2,16 +2,14 @@ import SwiftUI
 import SwiftData
 
 /// Planting calendar computed from profile + variety.
-/// Shows sowing, transplanting, and harvest dates as a Gantt-style timeline.
-/// Never stores dates — always computed from current profile + variety.
+/// Shows sowing, transplanting, and harvest dates as a timeline.
+/// Dates are never stored — always computed from the garden's profile
+/// (custom frost dates, falling back to USDA-zone averages) + variety data.
 
 struct PlantingCalendarView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query(sort: \Garden.name) private var gardens: [Garden]
     
-    let varieties: [Variety] = PlantDatabaseService.loadVarieties()
-    
-    init() {}
+    private let varieties: [Variety] = PlantDatabaseService.loadVarieties()
     
     var body: some View {
         NavigationStack {
@@ -29,19 +27,33 @@ struct PlantingCalendarView: View {
     }
     
     private func calendarList(_ garden: Garden) -> some View {
-        List {
+        let profile = garden.profile
+        
+        return List {
+            // Frost-date basis (custom values win; zone is the fallback)
+            Section {
+                Text("Last frost: \(profile?.lastFrostDate ?? "—") · First frost: \(profile?.firstFrostDate ?? "—") · USDA Zone \(profile?.usdaZone ?? "5")")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            footer: {
+                Text("Dates are computed from your frost dates. Change them in Settings → Edit Profile.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+            }
+            
             Section("This Season") {
                 ForEach(varieties) { variety in
                     plantingRow(variety, garden: garden)
                 }
             }
             
-            Section("Quick Reference") {
-                ForEach(companionPairs, id: \.0) { pair in
+            Section("Companion Quick Reference") {
+                ForEach(Array(companionPairs.enumerated()), id: \.offset) { _, pair in
                     HStack {
                         Text(pair.0)
                         Spacer()
-                        Text(pair.1)
+                        Text("+ \(pair.1)")
                             .foregroundStyle(.green)
                     }
                     .font(.caption)
@@ -51,7 +63,15 @@ struct PlantingCalendarView: View {
     }
     
     private func plantingRow(_ variety: Variety, garden: Garden) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        let profile = garden.profile
+        let window = FrostDateService.plantingWindow(
+            for: variety,
+            usdaZone: profile?.usdaZone ?? "5",
+            lastFrost: profile?.lastFrostDate,
+            firstFrost: profile?.firstFrostDate
+        )
+        
+        return VStack(alignment: .leading, spacing: 6) {
             Text(variety.name)
                 .font(.body)
                 .fontWeight(.medium)
@@ -60,14 +80,14 @@ struct PlantingCalendarView: View {
             HStack(spacing: 4) {
                 timelineSegment(
                     label: "Sow",
-                    days: -variety.sowOffset,
+                    days: variety.sowOffset,
                     totalDays: variety.daysToMature,
                     color: .blue
                 )
                 
                 timelineSegment(
                     label: "Transplant",
-                    days: -variety.transplantOffset,
+                    days: max(1, variety.transplantOffset),
                     totalDays: variety.daysToMature,
                     color: .orange
                 )
@@ -79,19 +99,19 @@ struct PlantingCalendarView: View {
                     color: .green
                 )
             }
-            .frame(height: 20)
+            .frame(height: 24)
             
-            // Dates
+            // Actual calendar dates
             HStack(spacing: 12) {
-                Text("🌱 \(variety.sowOffset)d before")
+                Text("🌱 \(window.sowDateString)")
                     .font(.caption2)
                     .foregroundStyle(.blue)
                 
-                Text("🌿 \(variety.transplantOffset)d before")
+                Text("🌿 \(window.transplantDateString)")
                     .font(.caption2)
                     .foregroundStyle(.orange)
                 
-                Text("🥬 \(variety.daysToMature)d total")
+                Text("🥬 \(window.harvestDateString)")
                     .font(.caption2)
                     .foregroundStyle(.green)
             }
@@ -100,8 +120,8 @@ struct PlantingCalendarView: View {
     }
     
     private func timelineSegment(label: String, days: Int, totalDays: Int, color: Color) -> some View {
-        let fraction = totalDays > 0 ? Double(abs(days)) / Double(totalDays) : 0.0
-        let width = max(20.0, fraction * 100)
+        let fraction = totalDays > 0 ? min(1.0, Double(days) / Double(totalDays)) : 0.0
+        let width = max(24.0, fraction * 110)
         
         return VStack(spacing: 2) {
             Capsule()
@@ -115,7 +135,7 @@ struct PlantingCalendarView: View {
     }
     
     private var companionPairs: [(String, String)] {
-        // Common companion pairs from the database
+        // Common companion pairs
         [
             ("Tomato", "Basil"),
             ("Tomato", "Marigold"),

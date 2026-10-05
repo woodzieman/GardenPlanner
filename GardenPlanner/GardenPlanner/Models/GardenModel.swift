@@ -63,9 +63,9 @@ extension Garden {
     }
     
     /// Get plants that have light/wetness mismatch warnings.
+    /// (Zone-based: a plant is flagged when its variety's sun or moisture
+    /// requirement doesn't match the zone's environment.)
     var flaggedPlants: [PlantInstance] {
-        guard let profile = profile, !profile.isValid else { return [] }
-        
         return plantInstances.filter { plant in
             guard let zone = plant.zone, let variety = plant.variety else { return false }
             return !isValid(variety: variety, in: zone)

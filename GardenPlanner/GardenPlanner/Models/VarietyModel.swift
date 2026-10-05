@@ -101,7 +101,7 @@ struct Variety: Identifiable, Codable, Hashable {
         
         // harvestWindow: Int, or a display string we parse into days.
         if let intValue = try? c.decodeIfPresent(Int.self, forKey: .harvestWindow) {
-            self.harvestWindow = intValue ?? 30
+            self.harvestWindow = intValue
             self.harvestWindowText = nil
         } else {
             let text = try c.decodeIfPresent(String.self, forKey: .harvestWindow)

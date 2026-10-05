@@ -26,6 +26,7 @@ final class LiDARScanner: NSObject, ObservableObject {
     @Published var pointCloud: [SIMD3<Float>] = []
     @Published var heightmap: [Float] = []
     @Published var groundPlane: Plane? = nil
+    @Published var processedMap: GardenMap? = nil
 
     /// For non-depth devices, store the manual map polygon instead.
     @Published var manualMapPolygon: [[Double]] = []
@@ -110,12 +111,14 @@ final class LiDARScanner: NSObject, ObservableObject {
         heightmap = heightData
         print("  ✓ Heightmap: \(heightData.count) samples")
 
-        return GardenMap(
+        let map = GardenMap(
             boundary: boundary,
             heightmap: heightData,
             groundPlane: plane,
             scanDuration: scanDuration
         )
+        processedMap = map
+        return map
     }
 
     // MARK: - Private helpers
@@ -196,7 +199,7 @@ final class LiDARScanner: NSObject, ObservableObject {
         guard !points.isEmpty else {
             return Plane(normal: simd_float3(0, 1, 0), distance: 0)
         }
-        let centroid = points.reduce(SIMD3<Float>(0)) { $0 + $1 } / Float(points.count)
+        let centroid = points.reduce(SIMD3<Float>(repeating: 0)) { $0 + $1 } / Float(points.count)
         let normal = simd_float3(0, 1, 0)
         let distance = -simd_dot(normal, centroid)
         return Plane(normal: normal, distance: distance)
@@ -327,7 +330,7 @@ extension LiDARScanner: ARSessionDelegate {
                 let clip = SIMD4<Float>(ndcX, ndcY, -1, 1)
 
                 // Unproject to a ray direction in camera space.
-                var dirCam = inverseProjection * clip
+                let dirCam = inverseProjection * clip
                 let dirCam3 = SIMD3<Float>(dirCam.x, dirCam.y, dirCam.z)
                 let len = simd_length(dirCam3)
                 guard len > 0.0001 else { continue }

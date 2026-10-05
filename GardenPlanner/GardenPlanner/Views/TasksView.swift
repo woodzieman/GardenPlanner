@@ -21,11 +21,8 @@ struct TasksView: View {
                 // Today
                 todayTasksSection
                 
-                // Future
+                // Future (manual and calendar-derived tasks both live here)
                 futureTasksSection
-                
-                // Manual tasks
-                manualTasksSection
             }
             .navigationTitle("Tasks")
             .toolbar {
@@ -81,22 +78,6 @@ struct TasksView: View {
         if !future.isEmpty {
         Section("Upcoming") {
             ForEach(future) { task in
-                TaskRow(task: task)
-                    .listRowSeparator(.hidden)
-            }
-            .onDelete { indexSet in
-                deleteTasks(at: indexSet)
-            }
-        }
-        }
-    }
-    
-    @ViewBuilder
-    private var manualTasksSection: some View {
-        let manual = tasks.filter { $0.isManual && !$0.completed }
-        if !manual.isEmpty {
-        Section("Manual Tasks") {
-            ForEach(manual) { task in
                 TaskRow(task: task)
                     .listRowSeparator(.hidden)
             }

@@ -29,7 +29,7 @@ struct CompanionPlantService {
     
     /// Get all plants that conflict with the given variety.
     static func conflictingPlants(named name: String) -> [Variety] {
-        let (companions, antagonists) = compatibility(for: name)
+        let (_, antagonists) = compatibility(for: name)
         let allVarieties = PlantDatabaseService.loadVarieties()
         
         return allVarieties.filter { variety in
@@ -39,7 +39,7 @@ struct CompanionPlantService {
     
     /// Check if two plant names are compatible.
     static func isCompatible(_ plant1: String, with plant2: String) -> Bool {
-        let (companions, antagonists) = compatibility(for: plant1)
+        let (_, antagonists) = compatibility(for: plant1)
         return !antagonists.contains(plant2)
     }
     
